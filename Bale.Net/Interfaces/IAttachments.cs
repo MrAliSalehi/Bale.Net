@@ -1,6 +1,6 @@
 ﻿namespace Bale.Net.Interfaces;
 
-public interface IMessage
+public interface IAttachments
 {
     
 }

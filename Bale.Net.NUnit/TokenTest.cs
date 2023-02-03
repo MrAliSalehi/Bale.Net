@@ -6,11 +6,10 @@ namespace Bale.Net.NUnit;
 public class TokenTest
 {
     private readonly string _token;
-    private BaleClient client;
+    private BaleClient? _client;
     public TokenTest()
     {
         var configuration = new ConfigurationBuilder()
-            .AddUserSecrets<TestConfig>()
             .AddJsonFile("secrets.json")
             .Build();
         
@@ -25,7 +24,7 @@ public class TokenTest
     [Test]
     public void ClientToken_IsNotNull()
     {
-        client = new (_token);
-        Assert.That(client.Token,Is.Not.Null);
+        _client = new (_token);
+        Assert.That(_client.Token,Is.Not.Null);
     }
 }
