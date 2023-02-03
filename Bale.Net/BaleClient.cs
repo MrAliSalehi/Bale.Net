@@ -2,10 +2,11 @@
 
 public class BaleClient
 {
-    private readonly string _token;
+    internal readonly string Token;
     public BaleClient(string token)
     {
-        _token = token;
+        Token = token;
     }
+    
     
 }
