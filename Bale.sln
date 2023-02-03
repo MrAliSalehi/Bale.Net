@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{747E1000-D967-412F-97B5-AA60138A2135}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B71C6D55-3FF6-4F81-A55A-09378160A9DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bale.Net.NUnit", "Bale.Net.NUnit\Bale.Net.NUnit.csproj", "{68C6768F-CC3E-45B0-8AB3-D13901F20870}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bale.Net", "Bale.Net\Bale.Net.csproj", "{4866DC67-0E80-4C98-95A5-A0D2C392908F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{68C6768F-CC3E-45B0-8AB3-D13901F20870} = {B71C6D55-3FF6-4F81-A55A-09378160A9DB}
+		{4866DC67-0E80-4C98-95A5-A0D2C392908F} = {747E1000-D967-412F-97B5-AA60138A2135}
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68C6768F-CC3E-45B0-8AB3-D13901F20870}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68C6768F-CC3E-45B0-8AB3-D13901F20870}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68C6768F-CC3E-45B0-8AB3-D13901F20870}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68C6768F-CC3E-45B0-8AB3-D13901F20870}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4866DC67-0E80-4C98-95A5-A0D2C392908F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4866DC67-0E80-4C98-95A5-A0D2C392908F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4866DC67-0E80-4C98-95A5-A0D2C392908F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4866DC67-0E80-4C98-95A5-A0D2C392908F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
