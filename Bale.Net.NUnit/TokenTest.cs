@@ -9,11 +9,7 @@ public class TokenTest
     private BaleClient? _client;
     public TokenTest()
     {
-        var configuration = new ConfigurationBuilder()
-            .AddJsonFile("secrets.json")
-            .Build();
-        
-        _token = configuration.GetRequiredSection("Token").Value!;
+        _token = Helpers.GetTestToken();
     }
 
     [Test]
