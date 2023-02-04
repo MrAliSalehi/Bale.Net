@@ -15,7 +15,8 @@ internal class ApiEndpoint
         Endpoint.DeleteMessage => "/deleteMessage",
         Endpoint.SetWebHook    => "/setWebhook",
         Endpoint.DeleteWebHook => "/deleteWebhook",
-        Endpoint.GetUpdates => "/getUpdates",
+        Endpoint.GetUpdates    => "/getUpdates",
+        Endpoint.GetChat       => "/getchat",
         _                      => ""
     };
 }
@@ -29,4 +30,5 @@ internal enum Endpoint
     SetWebHook,
     DeleteWebHook,
     GetUpdates,
+    GetChat,
 }

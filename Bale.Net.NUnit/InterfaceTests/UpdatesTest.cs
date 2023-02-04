@@ -28,17 +28,21 @@ public class UpdatesTest
     {
         var updates = await _client.Updates.GetUpdatesAsync(1, 0);
 
-
         var update = updates.First();
 
         Assert.That(updates, Is.Not.Empty.Or.Null);
-        Assert.That(updates.Length, Is.Positive.Within(5));
-        
-        Assert.That(update.Message, Is.Not.Null);
-        Assert.That(update.Message!.Chat, Is.Not.Null);
-        Assert.That(update.Message!.From, Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(updates, Has.Length.Positive.Within(5));
+            Assert.That(update.Message, Is.Not.Null);
+        });
+        Assert.Multiple(() =>
+        {
+            Assert.That(update.Message!.Chat, Is.Not.Null);
+            Assert.That(update.Message!.From, Is.Not.Null);
 
-        Assert.That(update.Message.From!.Id, Is.EqualTo(MyId));
-        Assert.That(update.Message.Chat!.Id, Is.EqualTo(MyId));
+            Assert.That(update.Message.From!.Id, Is.EqualTo(MyId));
+            Assert.That(update.Message.Chat!.Id, Is.EqualTo(MyId));
+        });
     }
 }

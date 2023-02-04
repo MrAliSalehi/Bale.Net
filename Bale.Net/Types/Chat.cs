@@ -8,7 +8,8 @@ public sealed class Chat
     public int Id { get; set; }
 
     [JsonPropertyName("type")]
-    public string? Type { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public ChatType Type { get; set; }
 
     [JsonPropertyName("title")]
     public string? Title { get; set; }
@@ -39,4 +40,5 @@ public sealed class Chat
 
     [JsonPropertyName("can_set_sticker_set")]
     public bool CanSetStickerSet { get; set; }
+    public static implicit operator long(Chat chat) => chat.Id;
 }

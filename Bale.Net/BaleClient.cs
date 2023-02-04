@@ -1,6 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
+using System.Web;
 using Bale.Net.Implementations;
 using Bale.Net.Interfaces;
 using Bale.Net.Types;
@@ -42,8 +43,8 @@ public class BaleClient
         Users = new Users(this);
         Messages = new Messages(this);
         Updates = new Updates(this);
+        Chats = new Chats(this);
         Attachments = new Attachments();
-        Chats = new Chats();
         Payments = new Payments();
     }
     internal async ValueTask<TResponse> GetAsync<TResponse>(Endpoint endpoint, string? queryParameter = null)
@@ -51,7 +52,7 @@ public class BaleClient
         var url = _apiEndpoint.GetUrl(endpoint);
         if (queryParameter is not null)
             url += queryParameter;
-
+        
         var response = await HttpClient.GetAsync(url);
         if (response.ReasonPhrase == "Too Many Requests")
             throw new Exception("Rate limit error");
