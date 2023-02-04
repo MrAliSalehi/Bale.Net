@@ -1,4 +1,4 @@
-﻿namespace Bale.Net.NUnit;
+﻿namespace Bale.Net.NUnit.InterfaceTests;
 
 public class UsersTest
 {
@@ -6,6 +6,11 @@ public class UsersTest
     public UsersTest()
     {
         _client = new BaleClient(Helpers.GetTestToken());
+    }
+    [Test]
+    public void IUser_IsNotNull()
+    {
+        Assert.That(_client.Users,Is.Not.Null);
     }
     [Test]
     public async Task GetMe_ShouldReturnMe()

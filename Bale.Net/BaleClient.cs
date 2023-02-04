@@ -19,9 +19,14 @@ public class BaleClient
     internal readonly string Token;
 
     internal static readonly Uri BaseUrl = new("https://tapi.bale.ai/", UriKind.Absolute);
+
+    internal readonly ApiEndpoint ApiEndpoint;
+
     public BaleClient(string token)
     {
         Token = token;
+        ApiEndpoint = new(token);
+
         var provider = new ServiceCollection()
             .AddHttpClient(nameof(BaleClient), client =>
             {
@@ -41,8 +46,7 @@ public class BaleClient
     }
     internal async ValueTask<TResponse> GetAsync<TResponse>(Endpoint endpoint, string? queryParameter = null)
     {
-        var url = Api.Endpoints[endpoint];
-        url = $"/bot{Token}{url}";
+        var url = ApiEndpoint.GetUrl(endpoint);
         if (queryParameter is not null)
             url += queryParameter;
 
@@ -56,7 +60,7 @@ public class BaleClient
             throw new Exception("Api changed, please contact the author to update the client.");
         if (!deserialize.Ok)
             throw new Exception($"request failed with code:[{deserialize.ErrorCode}],description:{deserialize.Description}");
-        
+
         return deserialize.Result;
     }
 }
