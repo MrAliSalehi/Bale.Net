@@ -1,5 +1,6 @@
 ﻿using Bale.Net.Interfaces;
 using Bale.Net.Types;
+using Bale.Net.Types.Internal;
 
 namespace Bale.Net.Implementations;
 
@@ -21,10 +22,20 @@ public class Messages : IMessages
             body.ReplyMarkup = replyMarkup;
         if (replayToMessageId is not 0)
             body.ReplyToMessageId = replayToMessageId;
-        
-        var response = await _client.PostAsync<SendMessageRequest,Message>(Endpoint.SendMessage,body);
-        
-        
-        return response;
+
+        return await _client.PostAsync<SendMessageRequest, Message>(Endpoint.SendMessage, body);
+    }
+    public async ValueTask<EditMessage> EditMessageTextAsync(long chatId, long messageId, string message, ReplyMarkup? replyMarkup = null)
+    {
+        var body = new EditMessageRequest
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+            Message = message
+        };
+        if (replyMarkup is not null)
+            body.ReplyMarkup = replyMarkup;
+
+        return await _client.PostAsync<EditMessageRequest, EditMessage>(Endpoint.EditMessage, body);
     }
 }

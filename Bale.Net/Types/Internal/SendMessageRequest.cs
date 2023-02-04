@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Bale.Net.Types;
+namespace Bale.Net.Types.Internal;
 
 internal sealed class SendMessageRequest
 {

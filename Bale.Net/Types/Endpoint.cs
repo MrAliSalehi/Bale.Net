@@ -11,6 +11,7 @@ internal class ApiEndpoint
     {
         Endpoint.GetMe       => "/getme",
         Endpoint.SendMessage => "/sendMessage",
+        Endpoint.EditMessage =>"/EditMessageText",
         _                    => ""
     };
 }
@@ -18,5 +19,6 @@ internal class ApiEndpoint
 internal enum Endpoint
 {
     GetMe,
-    SendMessage
+    SendMessage,
+    EditMessage,
 }
