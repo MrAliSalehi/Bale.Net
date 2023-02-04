@@ -20,7 +20,8 @@ public class Messages : IMessages
         };
         if (replyMarkup is not null)
             body.ReplyMarkup = replyMarkup;
-        if (replayToMessageId is not 0)
+        
+        if (replayToMessageId != 0)
             body.ReplyToMessageId = replayToMessageId;
 
         return await _client.PostAsync<SendMessageRequest, Message>(Endpoint.SendMessage, body);
@@ -37,5 +38,13 @@ public class Messages : IMessages
             body.ReplyMarkup = replyMarkup;
 
         return await _client.PostAsync<EditMessageRequest, EditMessage>(Endpoint.EditMessage, body);
+    }
+    public async ValueTask<bool> DeleteMessageAsync(long chatId, long messageId)
+    {
+        var body = new DeleteMessageRequest
+        {
+            ChatId = chatId, MessageId = messageId
+        };
+        return await _client.PostAsync<DeleteMessageRequest, bool>(Endpoint.DeleteMessage, body);
     }
 }

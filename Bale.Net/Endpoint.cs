@@ -1,4 +1,4 @@
-﻿namespace Bale.Net.Types;
+﻿namespace Bale.Net;
 
 internal class ApiEndpoint
 {
@@ -9,10 +9,11 @@ internal class ApiEndpoint
     }
     internal string GetUrl(Endpoint endpoint) =>  $"/bot{_token}" + endpoint switch
     {
-        Endpoint.GetMe       => "/getme",
-        Endpoint.SendMessage => "/sendMessage",
-        Endpoint.EditMessage =>"/EditMessageText",
-        _                    => ""
+        Endpoint.GetMe         => "/getme",
+        Endpoint.SendMessage   => "/sendMessage",
+        Endpoint.EditMessage   =>"/EditMessageText",
+        Endpoint.DeleteMessage =>"/deleteMessage",
+        _                      => ""
     };
 }
 
@@ -21,4 +22,5 @@ internal enum Endpoint
     GetMe,
     SendMessage,
     EditMessage,
+    DeleteMessage,
 }

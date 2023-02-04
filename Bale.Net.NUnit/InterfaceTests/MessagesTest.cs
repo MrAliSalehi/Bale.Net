@@ -10,6 +10,7 @@ public class MessagesTest
     private const long TestBotId = 102472526;
     private const long ValidMessageId = 1750352069;
     private const long ValidBotMessageIdToEdit = 1264118920;
+    private static readonly ReplyMarkup ValidInlineKeyboard = new ReplyMarkup { InlineKeyboard = new[] { new[] { new InlineKeyboard { Text = "first inline", CallbackData = "first callback", SwitchInlineQuery = "", SwitchInlineQueryCurrentChat = "", Pay = false }, new InlineKeyboard { Text = "some link", Url = "https://www.google.com" } } } };
     public MessagesTest()
     {
         _client = new(Helpers.GetTestToken());
@@ -40,9 +41,15 @@ public class MessagesTest
     }
 
     [Test]
-    public async Task SendMessage_WithReplayToMessage_ShouldReplay()
+    public async Task SendMessage_WithReplayToMessageAndKeyboard_ShouldSendMessage()
     {
-        var response = await _client.Messages.SendMessageAsync(MyId, Text, replayToMessageId: ValidMessageId);
+        var response = await _client.Messages.SendMessageAsync(MyId, Text, ValidInlineKeyboard, ValidMessageId);
+
+        await Task.Delay(1000);
+
+        var buttonKeyboard = new ReplyMarkup { Keyboard = new[] { new[] { new Keyboard { Text = "button1", RequestContact = false, RequestLocation = false }, new Keyboard { Text = "send contact", RequestContact = true } } }, };
+        var response2 = await _client.Messages.SendMessageAsync(MyId, Text, buttonKeyboard, ValidMessageId);
+
 
         Assert.Multiple(() =>
         {
@@ -50,12 +57,19 @@ public class MessagesTest
             Assert.That(response.From!.Id, Is.EqualTo(TestBotId));
             Assert.That(response.Chat!.Id, Is.EqualTo(MyId));
         });
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(response2.Text, Is.EqualTo(Text));
+            Assert.That(response2.From!.Id, Is.EqualTo(TestBotId));
+            Assert.That(response2.Chat!.Id, Is.EqualTo(MyId));
+        });
     }
     [Test]
     public async Task EditMessage_ShouldEditMessage()
     {
         var randomNumber = Random.Shared.Next(int.MaxValue - 1);
-        var response = await _client.Messages.EditMessageTextAsync(MyId, ValidBotMessageIdToEdit, $"new edit_{randomNumber}");
+        var response = await _client.Messages.EditMessageTextAsync(MyId, ValidBotMessageIdToEdit, $"new edit_{randomNumber}", ValidInlineKeyboard);
         var now = DateTime.Now;
         Assert.Multiple(() =>
         {
@@ -73,5 +87,22 @@ public class MessagesTest
             Assert.That(response.Date.Hour, Is.EqualTo(now.Hour));
             Assert.That(response.Date.Minute, Is.EqualTo(now.Minute));
         });
+    }
+
+    [Test]
+    public async Task DeleteMessage_ShouldDeleteMessage()
+    {
+        const string msg = "message to delete";
+        var message = await _client.Messages.SendMessageAsync(MyId, msg);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(message.Text, Is.EqualTo(msg));
+            Assert.That(message.MessageId, Is.Not.Zero);
+        });
+        await Task.Delay(500); //avoid rate limit
+        var response = await _client.Messages.DeleteMessageAsync(MyId, message.MessageId);
+
+        Assert.That(response, Is.True);
     }
 }
