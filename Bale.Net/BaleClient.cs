@@ -1,4 +1,6 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Json;
+using System.Text;
+using System.Text.Json;
 using Bale.Net.Implementations;
 using Bale.Net.Interfaces;
 using Bale.Net.Types;
@@ -37,12 +39,12 @@ public class BaleClient
 
         HttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient(nameof(BaleClient));
 
+        Users = new Users(this);
+        Messages = new Messages(this);
         Attachments = new Attachments();
         Chats = new Chats();
-        Messages = new Messages();
         Payments = new Payments();
         Updates = new Updates();
-        Users = new Users(this);
     }
     internal async ValueTask<TResponse> GetAsync<TResponse>(Endpoint endpoint, string? queryParameter = null)
     {
@@ -54,8 +56,26 @@ public class BaleClient
         if (response.ReasonPhrase == "Too Many Requests")
             throw new Exception("Rate limit error");
 
-        var content = await response.Content.ReadAsStringAsync();
-        var deserialize = JsonSerializer.Deserialize<BaseApiResponse<TResponse>>(content);
+        var deserialize = JsonSerializer.Deserialize<BaseApiResponse<TResponse>>(await response.Content.ReadAsStringAsync());
+        if (deserialize is null)
+            throw new Exception("Api changed, please contact the author to update the client.");
+        if (!deserialize.Ok)
+            throw new Exception($"request failed with code:[{deserialize.ErrorCode}],description:{deserialize.Description}");
+
+        return deserialize.Result;
+    }
+    internal async ValueTask<TResponse> PostAsync<TBody, TResponse>(Endpoint endpoint, TBody body, string? queryParameter = null)
+    {
+        var url = ApiEndpoint.GetUrl(endpoint);
+        if (queryParameter is not null)
+            url += queryParameter;
+
+        var content = new StringContent(JsonSerializer.Serialize(body), Encoding.UTF8, "application/json");
+        var response = await HttpClient.PostAsync(url, content);
+        if (response.ReasonPhrase == "Too Many Requests")
+            throw new Exception("Rate limit error");
+
+        var deserialize = JsonSerializer.Deserialize<BaseApiResponse<TResponse>>(await response.Content.ReadAsStringAsync());
         if (deserialize is null)
             throw new Exception("Api changed, please contact the author to update the client.");
         if (!deserialize.Ok)

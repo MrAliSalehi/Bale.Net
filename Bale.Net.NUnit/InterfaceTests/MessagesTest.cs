@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+﻿using Bale.Net.Types;
 
 namespace Bale.Net.NUnit.InterfaceTests;
 
@@ -13,6 +12,11 @@ public class MessagesTest
     [Test]
     public async Task SendMessage_Should_SendMessage()
     {
-        //var response = await _client.Messages.SendMessageAsync();
+        var keyboard = new ReplyMarkup
+        {
+            InlineKeyboard = new []{new []{new InlineKeyboard(){Text = "test1",CallbackData = "testd"}}},
+            Keyboard = new []{new []{new Keyboard{Text = "keyboard"}}}
+        };
+        var response = await _client.Messages.SendMessageAsync(2047754943,"hello",keyboard);
     }
 }

@@ -7,14 +7,16 @@ internal class ApiEndpoint
     {
         _token = token;
     }
-    internal string GetUrl(Endpoint endpoint) => $"bot{_token}" + endpoint switch
+    internal string GetUrl(Endpoint endpoint) =>  $"/bot{_token}" + endpoint switch
     {
-        Endpoint.GetMe => "/getme",
-        _              => ""
+        Endpoint.GetMe       => "/getme",
+        Endpoint.SendMessage => "/sendMessage",
+        _                    => ""
     };
 }
 
 internal enum Endpoint
 {
-    GetMe
+    GetMe,
+    SendMessage
 }
