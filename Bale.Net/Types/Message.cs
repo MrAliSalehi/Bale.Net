@@ -4,15 +4,27 @@ namespace Bale.Net.Types;
 
 public sealed class Message
 {
+
     [JsonPropertyName("message_id")]
     public int MessageId { get; set; }
 
     [JsonPropertyName("from")]
     public User? From { get; set; }
 
+    
+    private int _dateUtc;
+    [JsonInclude]
     [JsonPropertyName("date")]
-    public int Date { get; set; }
-
+    public int DateUtc
+    {
+        get => _dateUtc;
+        set
+        {
+            _dateUtc = value;
+            Date = DateTimeOffset.FromUnixTimeSeconds(value).LocalDateTime;
+        }
+    }
+    public DateTime Date { get; set; }
     [JsonPropertyName("chat")]
     public Chat? Chat { get; set; }
 

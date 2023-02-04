@@ -22,12 +22,12 @@ public class BaleClient
 
     internal static readonly Uri BaseUrl = new("https://tapi.bale.ai/", UriKind.Absolute);
 
-    internal readonly ApiEndpoint ApiEndpoint;
+    private readonly ApiEndpoint _apiEndpoint;
 
     public BaleClient(string token)
     {
         Token = token;
-        ApiEndpoint = new(token);
+        _apiEndpoint = new(token);
 
         var provider = new ServiceCollection()
             .AddHttpClient(nameof(BaleClient), client =>
@@ -48,7 +48,7 @@ public class BaleClient
     }
     internal async ValueTask<TResponse> GetAsync<TResponse>(Endpoint endpoint, string? queryParameter = null)
     {
-        var url = ApiEndpoint.GetUrl(endpoint);
+        var url = _apiEndpoint.GetUrl(endpoint);
         if (queryParameter is not null)
             url += queryParameter;
 
@@ -66,7 +66,7 @@ public class BaleClient
     }
     internal async ValueTask<TResponse> PostAsync<TBody, TResponse>(Endpoint endpoint, TBody body, string? queryParameter = null)
     {
-        var url = ApiEndpoint.GetUrl(endpoint);
+        var url = _apiEndpoint.GetUrl(endpoint);
         if (queryParameter is not null)
             url += queryParameter;
 
