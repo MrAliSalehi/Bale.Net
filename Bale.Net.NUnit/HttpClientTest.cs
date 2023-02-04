@@ -8,13 +8,12 @@ public class HttpClientTest
         _client = new BaleClient(Helpers.GetTestToken());
     }
     [Test]
-    public void HttpClientFactory_IsCreatedSuccessfully()
+    public void HttpClient_IsCreatedSuccessfully()
     {
-        var httpClient = _client.HttpClientFactory.CreateClient("baleApi");
+        var httpClient = _client.HttpClient;
         Assert.Multiple(() =>
         {
-            Assert.That(_client.HttpClientFactory, Is.Not.Null);
-            Assert.That(httpClient, Is.Not.Null);
+            Assert.That(_client.HttpClient, Is.Not.Null);
         });
         Assert.That(BaleClient.BaseUrl.AbsolutePath, Is.EqualTo(httpClient.BaseAddress!.AbsolutePath));
     }
