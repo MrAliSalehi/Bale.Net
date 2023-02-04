@@ -41,10 +41,10 @@ public class BaleClient
 
         Users = new Users(this);
         Messages = new Messages(this);
+        Updates = new Updates(this);
         Attachments = new Attachments();
         Chats = new Chats();
         Payments = new Payments();
-        Updates = new Updates();
     }
     internal async ValueTask<TResponse> GetAsync<TResponse>(Endpoint endpoint, string? queryParameter = null)
     {

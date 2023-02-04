@@ -7,12 +7,14 @@ internal class ApiEndpoint
     {
         _token = token;
     }
-    internal string GetUrl(Endpoint endpoint) =>  $"/bot{_token}" + endpoint switch
+    internal string GetUrl(Endpoint endpoint) => $"/bot{_token}" + endpoint switch
     {
         Endpoint.GetMe         => "/getme",
         Endpoint.SendMessage   => "/sendMessage",
-        Endpoint.EditMessage   =>"/EditMessageText",
-        Endpoint.DeleteMessage =>"/deleteMessage",
+        Endpoint.EditMessage   => "/EditMessageText",
+        Endpoint.DeleteMessage => "/deleteMessage",
+        Endpoint.SetWebHook    => "/setWebhook",
+        Endpoint.DeleteWebHook => "/deleteWebhook",
         _                      => ""
     };
 }
@@ -23,4 +25,6 @@ internal enum Endpoint
     SendMessage,
     EditMessage,
     DeleteMessage,
+    SetWebHook,
+    DeleteWebHook
 }

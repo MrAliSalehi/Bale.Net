@@ -10,7 +10,16 @@ public class MessagesTest
     private const long TestBotId = 102472526;
     private const long ValidMessageId = 1750352069;
     private const long ValidBotMessageIdToEdit = 1264118920;
-    private static readonly ReplyMarkup ValidInlineKeyboard = new ReplyMarkup { InlineKeyboard = new[] { new[] { new InlineKeyboard { Text = "first inline", CallbackData = "first callback", SwitchInlineQuery = "", SwitchInlineQueryCurrentChat = "", Pay = false }, new InlineKeyboard { Text = "some link", Url = "https://www.google.com" } } } };
+
+    private static readonly ReplyMarkup ValidInlineKeyboard = new()
+    {
+        InlineKeyboard = new[] { new[]
+        {
+            new InlineKeyboard { Text = "first inline", CallbackData = "first callback", SwitchInlineQuery = "", SwitchInlineQueryCurrentChat = "", Pay = false },
+            new InlineKeyboard { Text = "some link", Url = "https://www.google.com" }
+        } }
+    };
+
     public MessagesTest()
     {
         _client = new(Helpers.GetTestToken());
