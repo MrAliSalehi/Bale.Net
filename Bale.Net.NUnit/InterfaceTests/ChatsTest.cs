@@ -35,4 +35,12 @@ public class ChatsTest
             Assert.That(chatMembers.Count(p => p.User.Id == MyChatId), Is.EqualTo(1));
         });
     }
+    [Test]
+    public async Task GetChatMembersCount_ShouldReturn_AtLeast2()
+    {
+        var count = await _client.Chats.GetChatMembersCountAsync(MyGroupChatId);
+
+        Assert.That(count, Is.Not.Zero);
+        Assert.That(count, Is.Positive.Within(2));
+    }
 }
