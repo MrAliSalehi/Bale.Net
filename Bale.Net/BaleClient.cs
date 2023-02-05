@@ -17,18 +17,18 @@ public class BaleClient
     public IPayments Payments { get; }
     public IUpdates Updates { get; }
     public IUsers Users { get; }
-    public HttpClient HttpClient { get; } //todo : impl retry with polly
+    internal HttpClient HttpClient { get; } //todo : impl retry with polly
 
     internal readonly string Token;
 
     internal static readonly Uri BaseUrl = new("https://tapi.bale.ai/", UriKind.Absolute);
 
-    private readonly ApiEndpoint _apiEndpoint;
+    internal readonly ApiEndpoint ApiEndpoint;
 
     public BaleClient(string token)
     {
         Token = token;
-        _apiEndpoint = new(token);
+        ApiEndpoint = new(token);
 
         var provider = new ServiceCollection()
             .AddHttpClient(nameof(BaleClient), client =>
@@ -36,7 +36,7 @@ public class BaleClient
                 client.Timeout = TimeSpan.FromSeconds(3);
                 client.BaseAddress = BaseUrl;
             }).Services.BuildServiceProvider();
-
+        
 
         HttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient(nameof(BaleClient));
 
@@ -44,12 +44,12 @@ public class BaleClient
         Messages = new Messages(this);
         Updates = new Updates(this);
         Chats = new Chats(this);
-        Attachments = new Attachments();
+        Attachments = new Attachments(this);
         Payments = new Payments();
     }
     internal async ValueTask<TResponse> GetAsync<TResponse>(Endpoint endpoint, string? queryParameter = null)
     {
-        var url = _apiEndpoint.GetUrl(endpoint);
+        var url = ApiEndpoint.GetUrl(endpoint);
         if (queryParameter is not null)
             url += queryParameter;
         
@@ -67,7 +67,7 @@ public class BaleClient
     }
     internal async ValueTask<TResponse> PostAsync<TBody, TResponse>(Endpoint endpoint, TBody body, string? queryParameter = null)
     {
-        var url = _apiEndpoint.GetUrl(endpoint);
+        var url = ApiEndpoint.GetUrl(endpoint);
         if (queryParameter is not null)
             url += queryParameter;
 
