@@ -18,7 +18,8 @@ public class Attachments : IAttachments
         if (caption is not null)
             url += $"&caption={caption}";
 
-        var response = await _client.HttpClient.PostAsync(url, media.Content);
+
+        var response = await _client.HttpClient.PostAsync(url, media.GetContent("photo"));
         var content = JsonSerializer.Deserialize<BaseApiResponse<Message>>(await response.Content.ReadAsStringAsync());
 
         if (content is null)

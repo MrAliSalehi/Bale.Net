@@ -4,26 +4,19 @@ namespace Bale.Net.Types;
 
 public class Media
 {
-    internal readonly MultipartFormDataContent Content;
-    private Media(MultipartFormDataContent content)
+    private readonly HttpContent _content;
+    private Media(HttpContent content)
     {
-        Content = content;
+        _content = content;
     }
-    public static Media FromDisk([StringSyntax(StringSyntaxAttribute.Uri)] string path)
+    public static Media FromDisk([StringSyntax(StringSyntaxAttribute.Uri)] string path) => new(new StreamContent(File.OpenRead(path)));
+    public static Media FromId(string fileId) => new(new StringContent(fileId));
+    public static Media FromUrl(Uri url) => new(new StringContent(url.AbsoluteUri));
+    
+    internal MultipartFormDataContent GetContent(string contentName)
     {
-        var content = new MultipartFormDataContent();
-        content.Add(new StreamContent(File.OpenRead(path)),"photo",Path.GetFileName(path));
-        return new Media(content);
-    }
-    public static Media FromId()
-    {
-        var media = new Media(new MultipartFormDataContent());
-        return media;
-    }
-    public static Media FromUrl(Uri url)
-    {//todo test this
-        var content = new MultipartFormDataContent();
-        content.Add(new StringContent(url.AbsolutePath),"photo");
-        return new Media(content);
+        var form = new MultipartFormDataContent();
+        form.Add(_content,contentName,"file");
+        return form;
     }
 }

@@ -33,7 +33,6 @@ public class BaleClient
         var provider = new ServiceCollection()
             .AddHttpClient(nameof(BaleClient), client =>
             {
-                client.Timeout = TimeSpan.FromSeconds(3);
                 client.BaseAddress = BaseUrl;
             }).Services.BuildServiceProvider();
         
