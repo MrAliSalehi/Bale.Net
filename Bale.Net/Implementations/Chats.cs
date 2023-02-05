@@ -16,4 +16,6 @@ public class Chats : IChats
         await _client.GetAsync<ChatMember[]>(Endpoint.GetChatAdministrators, $"?chat_id={chatId}");
     public async ValueTask<long> GetChatMembersCountAsync(long chatId) =>
         await _client.GetAsync<long>(Endpoint.GetChatMembersCount, $"?chat_id={chatId}");
+    public async ValueTask<ChatMember> GetChatMemberAsync(long chatId, long userId) =>
+        await _client.GetAsync<ChatMember>(Endpoint.GetChatMember, $"?chat_id={chatId}&user_id={userId}");
 }

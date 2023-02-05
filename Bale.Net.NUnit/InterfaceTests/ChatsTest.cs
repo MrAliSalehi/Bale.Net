@@ -43,4 +43,14 @@ public class ChatsTest
         Assert.That(count, Is.Not.Zero);
         Assert.That(count, Is.Positive.Within(2));
     }
+    [Test]
+    public async Task GetChatMember_ShouldReturn_Me()
+    {
+        var member = await _client.Chats.GetChatMemberAsync(MyGroupChatId, MyChatId);
+        
+        Assert.That(member,Is.Not.Null.Or.Empty);
+        Assert.That(member.Status,Is.EqualTo("creator"));
+        Assert.That(member.User,Is.Not.Null.Or.Empty);
+        Assert.That(member.User!.Id,Is.EqualTo(MyChatId));
+    }
 }

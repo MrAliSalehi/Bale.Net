@@ -19,6 +19,7 @@ internal sealed class ApiEndpoint
         Endpoint.GetChat               => "/getchat",
         Endpoint.GetChatAdministrators => "/getChatAdministrators",
         Endpoint.GetChatMembersCount   => "/getChatMembersCount",
+        Endpoint.GetChatMember         => "/getChatMember",
         _                              => ""
     };
 }
@@ -34,5 +35,6 @@ internal enum Endpoint
     GetUpdates,
     GetChat,
     GetChatAdministrators,
-    GetChatMembersCount
+    GetChatMembersCount,
+    GetChatMember,
 }

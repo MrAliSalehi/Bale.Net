@@ -21,4 +21,6 @@ public sealed class User
 
     [JsonPropertyName("is_bot")]
     public bool IsBot { get; set; }
+
+    public static implicit operator long(User user) => user.Id;
 }
