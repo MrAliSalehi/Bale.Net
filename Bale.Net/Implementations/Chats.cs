@@ -10,8 +10,8 @@ public class Chats : IChats
     {
         _client = client;
     }
-    public async ValueTask<Chat> GetChatAsync(long chatId)
-    {
-        return await _client.GetAsync<Chat>(Endpoint.GetChat, $"?chat_id={chatId}");
-    }
+    public async ValueTask<Chat> GetChatAsync(long chatId) =>
+        await _client.GetAsync<Chat>(Endpoint.GetChat, $"?chat_id={chatId}");
+    public async ValueTask<ChatMember[]> GetChatAdministratorsAsync(long chatId) =>
+        await _client.GetAsync<ChatMember[]>(Endpoint.GetChatAdministrators, $"?chat_id={chatId}");
 }

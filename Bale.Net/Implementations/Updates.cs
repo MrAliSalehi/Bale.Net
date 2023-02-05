@@ -13,22 +13,11 @@ public class Updates : IUpdates
         _client = client;
     }
 
-    public async ValueTask<bool> SetWebHookAsync([StringSyntax(StringSyntaxAttribute.Uri)] string url)
+    public async ValueTask<bool> SetWebHookAsync([StringSyntax(StringSyntaxAttribute.Uri)] string url) => await _client.PostAsync<SetWebhookRequest, bool>(Endpoint.SetWebHook, new SetWebhookRequest { Url = url });
+    public async ValueTask<bool> DeleteWebHookAsync() => await _client.GetAsync<bool>(Endpoint.DeleteWebHook);
+    public async ValueTask<Update[]> GetUpdatesAsync(long offset, long limit) => 
+        await _client.PostAsync<GetUpdatesRequest, Update[]>(Endpoint.GetUpdates, new GetUpdatesRequest
     {
-        var body = new SetWebhookRequest { Url = url };
-        return await _client.PostAsync<SetWebhookRequest, bool>(Endpoint.SetWebHook, body);
-    }
-    public async ValueTask<bool> DeleteWebHookAsync()
-    {
-        return await _client.GetAsync<bool>(Endpoint.DeleteWebHook);
-    }
-    public async ValueTask<Update[]> GetUpdatesAsync(long offset, long limit)
-    {
-        var body = new GetUpdatesRequest
-        {
-            Limit = limit, Offset = offset
-        };
-        var response = await _client.PostAsync<GetUpdatesRequest, Update[]>(Endpoint.GetUpdates, body);
-        return !response.Any() ? Array.Empty<Update>() : response;
-    }
+        Limit = limit, Offset = offset
+    });
 }
