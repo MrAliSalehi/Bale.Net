@@ -21,6 +21,13 @@ internal sealed class ApiEndpoint
         Endpoint.GetChatMembersCount   => "/getChatMembersCount",
         Endpoint.GetChatMember         => "/getChatMember",
         Endpoint.SendPhoto             => "/SendPhoto",
+        Endpoint.SendAudio             => "/SendAudio",
+        Endpoint.SendDocument          => "/SendDocument",
+        Endpoint.SendVideo             => "/SendVideo",
+        Endpoint.SendVoice             => "/SendVoice",
+        Endpoint.SendLocation          => "/SendLocation",
+        Endpoint.GetFile               => "/GetFile",
+        Endpoint.SendInvoice           => "/SendInvoice",
         _                              => ""
     };
 }
@@ -38,5 +45,12 @@ internal enum Endpoint
     GetChatAdministrators,
     GetChatMembersCount,
     GetChatMember,
-    SendPhoto
+    SendPhoto,
+    SendAudio,
+    SendDocument,
+    SendVideo,
+    SendVoice,
+    SendLocation,
+    GetFile,
+    SendInvoice,
 }
