@@ -12,6 +12,7 @@ public class AttachmentsTest
     private static readonly Uri ValidPhotoUrl = new("https://www.linkpicture.com/q/Screenshot_20230205_112447.png");
     private static readonly Uri ValidAudioUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/beautiful-random-minor-arp-119378.mp3");
     private static readonly Uri ValidDocUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/Bale.Net.NUnit.pdb");
+    private static readonly Uri ValidVidUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/testVid.mp4");
     public AttachmentsTest()
     {
         _client = new BaleClient(Helpers.GetTestToken());
@@ -77,12 +78,52 @@ public class AttachmentsTest
 
             Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
             Assert.That(message.From, Is.Not.Null);
-            Assert.That(message.Caption,Is.Not.Null.Or.Empty);
+            Assert.That(message.Caption, Is.Not.Null.Or.Empty);
         });
     }
+    [Test, TestCaseSource(nameof(VideoMediaSource))]
+    public async Task SendVideo_ShouldSendVideo(Media media)
+    {
+        var message = await _client.Attachments.SendVideoAsync(MyChatId, media, "test vid");
+        
+        Assert.That(message.Video, Is.Not.Null.Or.Empty);
+        Assert.Multiple(() =>
+        {
+            Assert.That(message.Video!.FileId, Is.Not.Null.Or.Empty);
+            Assert.That(message.Video.FileSize, Is.Not.Zero.Or.Empty);
+            Assert.That(message.Video.Height, Is.Not.Zero.Or.Empty);
+            Assert.That(message.Video.MimeType, Is.Not.Null.Or.Empty);
+            Assert.That(message.Video.Width, Is.Not.Zero.Or.Empty);
 
-
+            Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
+            Assert.That(message.From, Is.Not.Null);
+            Assert.That(message.Caption, Is.Not.Null.Or.Empty);
+        });
+        
+    }
     private static IEnumerable<Media> DocumentMediaSource()
+    {
+        var validDocPath = Path.Combine(Environment.CurrentDirectory, "Bale.Net.pdb");
+        const string validDocFileId = "102472526:-8500608615372218621:1:26be31450335e139";
+
+        yield return Media.FromDisk(validDocPath);
+        Task.Delay(600);
+        yield return Media.FromUrl(ValidDocUrl);
+        Task.Delay(600);
+        yield return Media.FromId(validDocFileId);
+    }
+    private static IEnumerable<Media> VideoMediaSource()
+    {
+        var validVidPath = Path.Combine(Environment.CurrentDirectory, "testVid.mp4");
+        const string validVidFileId = "102472526:9111538882509545218:1:26be31450335e139";
+
+        yield return Media.FromDisk(validVidPath);
+        Task.Delay(600);
+        yield return Media.FromUrl(ValidVidUrl);
+        Task.Delay(600);
+        yield return Media.FromId(validVidFileId);
+    }
+    private static IEnumerable<Media> VoiceMediaSource()
     {
         var validDocPath = Path.Combine(Environment.CurrentDirectory, "Bale.Net.pdb");
         const string validDocFileId = "102472526:-8500608615372218621:1:26be31450335e139";
