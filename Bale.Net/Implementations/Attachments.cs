@@ -24,14 +24,21 @@ public class Attachments : IAttachments
         await SendAttachmentAsync(Endpoint.SendVoice, "voice", chatId, media, caption, replayToMessageId);
     public async ValueTask<Message> SendLocationAsync(long chatId, double latitude, double longitude, long replayToMessageId = 0)
     {
-        var body = new SendLocationRequest
-        {
-            ChatId = chatId, Latitude = latitude, Longitude = longitude
-        };
-        if (replayToMessageId is not 0)
-            body.ReplayToMessageId = replayToMessageId;
+        var url = _client.ApiEndpoint.GetUrl(Endpoint.SendLocation);
+        url += $"?chat_id={chatId}&{nameof(latitude)}={latitude}&{nameof(longitude)}={longitude}";
 
-        return await _client.PostAsync<SendLocationRequest, Message>(Endpoint.SendLocation, body);
+        if (replayToMessageId is not 0)
+            url += $"reply_to_message_id={replayToMessageId}";
+
+        var response = await _client.HttpClient.PostAsync(url, null);
+        var deserialize = JsonSerializer.Deserialize<BaseApiResponse<Message>>(await response.Content.ReadAsStringAsync());
+        
+        if (deserialize is null)
+            throw new Exception("api failed to return any data,perhaps there are some internal errors");
+        if (!deserialize.Ok)
+            throw new Exception($"Failed to send photo with error code:[{deserialize.ErrorCode}],description:{deserialize.Description}");
+        
+        return deserialize.Result;
     }
 
 

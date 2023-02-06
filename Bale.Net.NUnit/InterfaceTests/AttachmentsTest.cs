@@ -116,6 +116,22 @@ public class AttachmentsTest
         });
         
     }
+    [Test]
+    public async Task SendLocation_ShouldSendLocation()
+    {
+        var message = await _client.Attachments.SendLocationAsync(MyChatId,35.69253,51.41734);
+        
+        Assert.That(message.Location, Is.Not.Null.Or.Empty);
+        Assert.Multiple(() =>
+        {
+            Assert.That(message.Location, Is.Not.Null.Or.Empty);
+            Assert.That(message.Location!.Latitude, Is.Not.Zero.Or.Empty);
+            Assert.That(message.Location.Longitude, Is.Not.Zero.Or.Empty);
+            Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
+            Assert.That(message.From, Is.Not.Null);
+        });
+        
+    }
     private static IEnumerable<Media> DocumentMediaSource()
     {
         var validDocPath = Path.Combine(Environment.CurrentDirectory, "Bale.Net.pdb");

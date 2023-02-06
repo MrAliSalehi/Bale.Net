@@ -5,8 +5,8 @@ namespace Bale.Net.Types;
 public sealed class Location
 {
     [JsonPropertyName("longitude")]
-    public int Longitude { get; set; }
+    public double Longitude { get; set; }
 
     [JsonPropertyName("latitude")]
-    public int Latitude { get; set; }
+    public double Latitude { get; set; }
 }
