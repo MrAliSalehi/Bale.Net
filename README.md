@@ -57,6 +57,6 @@ var message = await _client.Attachments.SendPhotoAsync(chatId, media);
 var media = Media.FromDisk("/home/Photo/somepic.png");
 var message = await _client.Attachments.SendPhotoAsync(chatId, media);
 ```
-other methods perform the same way, they all accept an `Media`, and you fill it the same way.
+other methods perform the same way, they all accept a `Media`, and you fill it the same way.
 
 you can also read my [tests](https://github.com/MrAliSalehi/Bale.Net/tree/master/Bale.Net.NUnit/InterfaceTests) to see the methods in action.
