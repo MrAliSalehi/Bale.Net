@@ -15,8 +15,9 @@ public class Attachments : IAttachments
         await SendAttachmentAsync(Endpoint.SendPhoto, "photo", chatId, media, caption, replayToMessageId);
     public async ValueTask<Message> SendAudioAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendAudio, "audio", chatId, media, caption, replayToMessageId);
+    public async ValueTask<Message> SendDocumentAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+        await SendAttachmentAsync(Endpoint.SendDocument, "document", chatId, media, caption, replayToMessageId);
     
-
     private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, long chatId, Media media, string? caption = null, long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(endpoint);
