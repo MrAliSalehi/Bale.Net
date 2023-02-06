@@ -19,7 +19,12 @@ public class Attachments : IAttachments
         await SendAttachmentAsync(Endpoint.SendDocument, "document", chatId, media, caption, replayToMessageId);
     public async ValueTask<Message> SendVideoAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendVideo, "video", chatId, media, caption, replayToMessageId);
-    private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, long chatId, Media media, string? caption = null, long replayToMessageId = 0)
+    public async ValueTask<Message> SendVoiceAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+        await SendAttachmentAsync(Endpoint.SendVoice, "voice", chatId, media, caption, replayToMessageId);
+
+    private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, long chatId, Media media,
+                                                         string? caption = null,
+                                                         long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(endpoint);
         url += $"?chat_id={chatId}";
