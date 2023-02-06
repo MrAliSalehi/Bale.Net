@@ -7,19 +7,18 @@ public class AttachmentsTest
     private readonly BaleClient _client;
     private const long MyChatId = 2047754943;
     private const long TestBotId = 102472526;
-
-
-    private static readonly Uri ValidPhotoUrl = new("https://www.linkpicture.com/q/Screenshot_20230205_112447.png");
-    private static readonly Uri ValidAudioUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/beautiful-random-minor-arp-119378.mp3");
-    private static readonly Uri ValidDocUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/Bale.Net.NUnit.pdb");
-    private static readonly Uri ValidVidUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/testVid.mp4");
-    private static readonly Uri ValidVoiceUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/voice.ogg");
+    private static IEnumerable<Media> _photoMediaSource = TestCaseSources.PhotoMediaSource();
+    private static IEnumerable<Media> _audioMediaSource = TestCaseSources.AudioMediaSource();
+    private static IEnumerable<Media> _documentMediaSource = TestCaseSources.DocumentMediaSource();
+    private static IEnumerable<Media> _videoMediaSource = TestCaseSources.VideoMediaSource();
+    private static IEnumerable<Media> _voiceMediaSource = TestCaseSources.VoiceMediaSource();
     public AttachmentsTest()
     {
         _client = new BaleClient(Helpers.GetTestToken());
     }
 
-    [Test, TestCaseSource(nameof(PhotoMediaSource))]
+
+    [Test, TestCaseSource(nameof(_photoMediaSource))]
     public async Task SendPhoto_ShouldSendPhoto(Media media)
     {
         var message = await _client.Attachments.SendPhotoAsync(MyChatId, media, "test photo");
@@ -46,7 +45,8 @@ public class AttachmentsTest
         await Task.Delay(300);
         await _client.Messages.DeleteMessageAsync(message.Chat!.Id, message.MessageId);
     }
-    [Test, TestCaseSource(nameof(AudioMediaSource))]
+
+    [Test, TestCaseSource(nameof(_audioMediaSource))]
     public async Task SendAudio_ShouldSendAudio(Media media)
     {
         var message = await _client.Attachments.SendAudioAsync(MyChatId, media, "test Audio");
@@ -63,7 +63,7 @@ public class AttachmentsTest
         });
     }
 
-    [Test, TestCaseSource(nameof(DocumentMediaSource))]
+    [Test, TestCaseSource(nameof(_documentMediaSource))]
     public async Task SendDoc_ShouldSendDoc(Media media)
     {
         var message = await _client.Attachments.SendDocumentAsync(MyChatId, media, "test doc");
@@ -80,11 +80,12 @@ public class AttachmentsTest
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
         });
     }
-    [Test, TestCaseSource(nameof(VideoMediaSource))]
+
+    [Test, TestCaseSource(nameof(_videoMediaSource))]
     public async Task SendVideo_ShouldSendVideo(Media media)
     {
         var message = await _client.Attachments.SendVideoAsync(MyChatId, media, "test vid");
-        
+
         Assert.That(message.Video, Is.Not.Null.Or.Empty);
         Assert.Multiple(() =>
         {
@@ -97,13 +98,13 @@ public class AttachmentsTest
             Assert.That(message.From, Is.Not.Null);
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
         });
-        
     }
-    [Test, TestCaseSource(nameof(VoiceMediaSource))]
+
+    [Test, TestCaseSource(nameof(_voiceMediaSource))]
     public async Task SendVoice_ShouldSendVoice(Media media)
     {
         var message = await _client.Attachments.SendVoiceAsync(MyChatId, media, "test voice");
-        
+
         Assert.That(message.Voice, Is.Not.Null.Or.Empty);
         Assert.Multiple(() =>
         {
@@ -114,13 +115,13 @@ public class AttachmentsTest
             Assert.That(message.From, Is.Not.Null);
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
         });
-        
     }
+
     [Test]
     public async Task SendLocation_ShouldSendLocation()
     {
-        var message = await _client.Attachments.SendLocationAsync(MyChatId,35.69253,51.41734);
-        
+        var message = await _client.Attachments.SendLocationAsync(MyChatId, 35.69253, 51.41734);
+
         Assert.That(message.Location, Is.Not.Null.Or.Empty);
         Assert.Multiple(() =>
         {
@@ -130,61 +131,25 @@ public class AttachmentsTest
             Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
             Assert.That(message.From, Is.Not.Null);
         });
+    }
+
+    [Test]
+    public async Task SendContact_ShouldSendContact()
+    {
+        var message = await _client.Attachments.SendContactAsync(MyChatId, "9330001112", "fiName", "LName");
         
-    }
-    private static IEnumerable<Media> DocumentMediaSource()
-    {
-        var validDocPath = Path.Combine(Environment.CurrentDirectory, "Bale.Net.pdb");
-        const string validDocFileId = "102472526:-8500608615372218621:1:26be31450335e139";
-
-        yield return Media.FromDisk(validDocPath);
-        Task.Delay(600);
-        yield return Media.FromUrl(ValidDocUrl);
-        Task.Delay(600);
-        yield return Media.FromId(validDocFileId);
-    }
-    private static IEnumerable<Media> VideoMediaSource()
-    {
-        var validVidPath = Path.Combine(Environment.CurrentDirectory, "testVid.mp4");
-        const string validVidFileId = "102472526:9111538882509545218:1:26be31450335e139";
-
-        yield return Media.FromDisk(validVidPath);
-        Task.Delay(600);
-        yield return Media.FromUrl(ValidVidUrl);
-        Task.Delay(600);
-        yield return Media.FromId(validVidFileId);
-    }
-    private static IEnumerable<Media> VoiceMediaSource()
-    {
-        var validVoicePath = Path.Combine(Environment.CurrentDirectory, "voice.ogg");
-        const string validVoiceFileId = "102472526:-7181420884580819199:1:26be31450335e139";
-
-        yield return Media.FromDisk(validVoicePath);
-        Task.Delay(600);
-        yield return Media.FromUrl(ValidVoiceUrl);
-        Task.Delay(600);
-        yield return Media.FromId(validVoiceFileId);
-    }
-    private static IEnumerable<Media> PhotoMediaSource()
-    {
-        var validPhotoPath = Path.Combine(Environment.CurrentDirectory, "Screenshot_20230205_112447.png");
-        const string validPhotoFileId = "102472526:6574097720140177152:1:deceef14d610758990901060a34bb34a34a99430d2cf2c91dd4224f7e84b244f";
-
-        yield return Media.FromDisk(validPhotoPath);
-        Task.Delay(600);
-        yield return Media.FromUrl(ValidPhotoUrl);
-        Task.Delay(600);
-        yield return Media.FromId(validPhotoFileId);
-    }
-    private static IEnumerable<Media> AudioMediaSource()
-    {
-        var validAudioPath = Path.Combine(Environment.CurrentDirectory, "beautiful-random-minor-arp-119378.mp3");
-        const string validAudioFileId = "102472526:7431267519825714946:1:26be31450335e139";
-
-        yield return Media.FromUrl(ValidAudioUrl);
-        Task.Delay(600);
-        yield return Media.FromDisk(validAudioPath);
-        Task.Delay(600);
-        yield return Media.FromId(validAudioFileId);
+        Assert.That(message.Contact,Is.Not.Null);
+        Assert.Multiple(() =>
+        {
+            Assert.That(message.Contact!.FirstName, Is.Not.Null.Or.Empty);
+            Assert.That(message.Contact.LastName, Is.Not.Null.Or.Empty);
+            Assert.That(message.Contact.PhoneNumber, Is.Not.Null.Or.Empty);
+            Assert.That(message.Chat, Is.Not.Null.Or.Empty);
+        });
+        Assert.Multiple(() =>
+        {
+            Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
+            Assert.That(message.From!.Id, Is.EqualTo(TestBotId));
+        });
     }
 }

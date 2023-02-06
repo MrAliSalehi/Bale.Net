@@ -51,7 +51,7 @@ public class Attachments : IAttachments
         if (replayToMessageId is not 0)
             body.ReplyToMessageId = replayToMessageId;
 
-        return await _client.PostAsync<SendContactRequest, Message>(Endpoint.SendLocation, body);
+        return await _client.PostAsync<SendContactRequest, Message>(Endpoint.SendContact, body);
     }
 
 

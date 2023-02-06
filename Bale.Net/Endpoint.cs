@@ -28,6 +28,7 @@ internal sealed class ApiEndpoint
         Endpoint.SendLocation          => "/SendLocation",
         Endpoint.GetFile               => "/GetFile",
         Endpoint.SendInvoice           => "/SendInvoice",
+        Endpoint.SendContact           => "/SendContact",
         _                              => ""
     };
 }
@@ -51,6 +52,7 @@ internal enum Endpoint
     SendVideo,
     SendVoice,
     SendLocation,
+    SendContact,
     GetFile,
     SendInvoice,
 }
