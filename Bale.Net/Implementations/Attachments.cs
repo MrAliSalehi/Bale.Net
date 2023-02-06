@@ -32,13 +32,26 @@ public class Attachments : IAttachments
 
         var response = await _client.HttpClient.PostAsync(url, null);
         var deserialize = JsonSerializer.Deserialize<BaseApiResponse<Message>>(await response.Content.ReadAsStringAsync());
-        
+
         if (deserialize is null)
             throw new Exception("api failed to return any data,perhaps there are some internal errors");
         if (!deserialize.Ok)
             throw new Exception($"Failed to send photo with error code:[{deserialize.ErrorCode}],description:{deserialize.Description}");
-        
+
         return deserialize.Result;
+    }
+    public async ValueTask<Message> SendContactAsync(long chatId, string phoneNumber, string firstName, string? lastName = "", long replayToMessageId = 0)
+    {
+        var body = new SendContactRequest
+        {
+            ChatId = chatId, PhoneNumber = phoneNumber, FirstName = firstName
+        };
+        if (lastName is not null)
+            body.LastName = lastName;
+        if (replayToMessageId is not 0)
+            body.ReplyToMessageId = replayToMessageId;
+
+        return await _client.PostAsync<SendContactRequest, Message>(Endpoint.SendLocation, body);
     }
 
 
