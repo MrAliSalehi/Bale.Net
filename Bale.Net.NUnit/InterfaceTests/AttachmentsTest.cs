@@ -13,6 +13,7 @@ public class AttachmentsTest
     private static readonly Uri ValidAudioUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/beautiful-random-minor-arp-119378.mp3");
     private static readonly Uri ValidDocUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/Bale.Net.NUnit.pdb");
     private static readonly Uri ValidVidUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/testVid.mp4");
+    private static readonly Uri ValidVoiceUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/voice.ogg");
     public AttachmentsTest()
     {
         _client = new BaleClient(Helpers.GetTestToken());
@@ -57,7 +58,6 @@ public class AttachmentsTest
             Assert.That(message.Audio.FileSize, Is.Not.Zero.Or.Empty);
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
             Assert.That(message.Audio.MimeType, Is.Not.Null.Or.Empty);
-
             Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
             Assert.That(message.From, Is.Not.Null);
         });
@@ -75,7 +75,6 @@ public class AttachmentsTest
             Assert.That(message.Document.FileSize, Is.Not.Zero.Or.Empty);
             Assert.That(message.Document.FileName, Is.Not.Null.Or.Empty);
             Assert.That(message.Document.MimeType, Is.Not.Null.Or.Empty);
-
             Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
             Assert.That(message.From, Is.Not.Null);
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
@@ -94,7 +93,23 @@ public class AttachmentsTest
             Assert.That(message.Video.Height, Is.Not.Zero.Or.Empty);
             Assert.That(message.Video.MimeType, Is.Not.Null.Or.Empty);
             Assert.That(message.Video.Width, Is.Not.Zero.Or.Empty);
-
+            Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
+            Assert.That(message.From, Is.Not.Null);
+            Assert.That(message.Caption, Is.Not.Null.Or.Empty);
+        });
+        
+    }
+    [Test, TestCaseSource(nameof(VoiceMediaSource))]
+    public async Task SendVoice_ShouldSendVoice(Media media)
+    {
+        var message = await _client.Attachments.SendVoiceAsync(MyChatId, media, "test voice");
+        
+        Assert.That(message.Voice, Is.Not.Null.Or.Empty);
+        Assert.Multiple(() =>
+        {
+            Assert.That(message.Voice!.FileId, Is.Not.Null.Or.Empty);
+            Assert.That(message.Voice.FileSize, Is.Not.Zero.Or.Empty);
+            Assert.That(message.Voice.MimeType, Is.Not.Null.Or.Empty);
             Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
             Assert.That(message.From, Is.Not.Null);
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
@@ -125,14 +140,14 @@ public class AttachmentsTest
     }
     private static IEnumerable<Media> VoiceMediaSource()
     {
-        var validDocPath = Path.Combine(Environment.CurrentDirectory, "Bale.Net.pdb");
-        const string validDocFileId = "102472526:-8500608615372218621:1:26be31450335e139";
+        var validVoicePath = Path.Combine(Environment.CurrentDirectory, "voice.ogg");
+        const string validVoiceFileId = "102472526:-7181420884580819199:1:26be31450335e139";
 
-        yield return Media.FromDisk(validDocPath);
+        yield return Media.FromDisk(validVoicePath);
         Task.Delay(600);
-        yield return Media.FromUrl(ValidDocUrl);
+        yield return Media.FromUrl(ValidVoiceUrl);
         Task.Delay(600);
-        yield return Media.FromId(validDocFileId);
+        yield return Media.FromId(validVoiceFileId);
     }
     private static IEnumerable<Media> PhotoMediaSource()
     {
