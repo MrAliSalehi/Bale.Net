@@ -2,6 +2,7 @@
 using Bale.Net.Interfaces;
 using Bale.Net.Types;
 using Bale.Net.Types.Internal;
+using File = Bale.Net.Types.File;
 
 namespace Bale.Net.Implementations;
 
@@ -22,6 +23,8 @@ public class Attachments : IAttachments
         await SendAttachmentAsync(Endpoint.SendVideo, "video", chatId, media, caption, replayToMessageId);
     public async ValueTask<Message> SendVoiceAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendVoice, "voice", chatId, media, caption, replayToMessageId);
+    public async ValueTask<File> GetFileAsync(string fileId) =>
+        await _client.GetAsync<File>(Endpoint.GetFile, $"?file_id={fileId}");
     public async ValueTask<Message> SendLocationAsync(long chatId, double latitude, double longitude, long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(Endpoint.SendLocation);

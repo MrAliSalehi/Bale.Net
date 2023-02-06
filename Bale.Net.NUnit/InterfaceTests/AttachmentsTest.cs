@@ -152,4 +152,17 @@ public class AttachmentsTest
             Assert.That(message.From!.Id, Is.EqualTo(TestBotId));
         });
     }
+    [Test]
+    public async Task GetFile_ShouldGetFile()
+    {
+        var file = await _client.Attachments.GetFileAsync(TestCaseSources.ValidAudioFileId);
+        
+        Assert.That(file,Is.Not.Null.Or.Empty);
+        Assert.Multiple(() =>
+        {
+            Assert.That(file.FileId, Is.EqualTo(TestCaseSources.ValidAudioFileId));
+            Assert.That(file.FileSize, Is.Not.Zero);
+            Assert.That(file.FilePath, Is.Not.Null.Or.Empty);
+        });
+    }
 }

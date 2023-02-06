@@ -9,7 +9,7 @@ public class Media
     {
         _content = content;
     }
-    public static Media FromDisk([StringSyntax(StringSyntaxAttribute.Uri)] string path) => new(new StreamContent(File.OpenRead(path)));
+    public static Media FromDisk([StringSyntax(StringSyntaxAttribute.Uri)] string path) => new(new StreamContent(System.IO.File.OpenRead(path)));
     public static Media FromId(string fileId) => new(new StringContent(fileId));
     public static Media FromUrl(Uri url) => new(new StringContent(url.AbsoluteUri));
     

@@ -9,16 +9,17 @@ internal static class TestCaseSources
     private static readonly Uri ValidDocUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/Bale.Net.NUnit.pdb");
     private static readonly Uri ValidVidUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/testVid.mp4");
     private static readonly Uri ValidVoiceUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/voice.ogg");
+    internal const string ValidAudioFileId = "102472526:7431267519825714946:1:26be31450335e139";
+
     internal static IEnumerable<Media> AudioMediaSource()
     {
         var validAudioPath = Path.Combine(Environment.CurrentDirectory, "beautiful-random-minor-arp-119378.mp3");
-        const string validAudioFileId = "102472526:7431267519825714946:1:26be31450335e139";
 
         yield return Media.FromUrl(ValidAudioUrl);
         Task.Delay(600);
         yield return Media.FromDisk(validAudioPath);
         Task.Delay(600);
-        yield return Media.FromId(validAudioFileId);
+        yield return Media.FromId(ValidAudioFileId);
     }
     internal static IEnumerable<Media> DocumentMediaSource()
     {
