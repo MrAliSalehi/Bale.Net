@@ -1,5 +1,6 @@
 [![NuGet stable version](https://badgen.net/nuget/v/Bale.Net)](https://www.nuget.org/packages/Bale.Net)
-
+<!--![Nuget](https://img.shields.io/nuget/dt/Bale.Net)
+-->
 # Bale.Net
 
 This is a Simple [Bale](https://bale.ai/) bot Api Wrapper for dotnet core.
