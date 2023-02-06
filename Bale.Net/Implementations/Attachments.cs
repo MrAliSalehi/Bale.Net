@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Bale.Net.Interfaces;
 using Bale.Net.Types;
+using Bale.Net.Types.Internal;
 
 namespace Bale.Net.Implementations;
 
@@ -21,10 +22,20 @@ public class Attachments : IAttachments
         await SendAttachmentAsync(Endpoint.SendVideo, "video", chatId, media, caption, replayToMessageId);
     public async ValueTask<Message> SendVoiceAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendVoice, "voice", chatId, media, caption, replayToMessageId);
+    public async ValueTask<Message> SendLocationAsync(long chatId, double latitude, double longitude, long replayToMessageId = 0)
+    {
+        var body = new SendLocationRequest
+        {
+            ChatId = chatId, Latitude = latitude, Longitude = longitude
+        };
+        if (replayToMessageId is not 0)
+            body.ReplayToMessageId = replayToMessageId;
 
-    private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, long chatId, Media media,
-                                                         string? caption = null,
-                                                         long replayToMessageId = 0)
+        return await _client.PostAsync<SendLocationRequest, Message>(Endpoint.SendLocation, body);
+    }
+
+
+    private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, long chatId, Media media, string? caption = null, long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(endpoint);
         url += $"?chat_id={chatId}";
