@@ -9,15 +9,15 @@ This is a Simple [Bale](https://bale.ai/) bot Api Wrapper for dotnet core.
 
 you can get this package using [nuget](https://www.nuget.org/packages/Bale.Net/): 
 
-`dotnet add package Bale.Net --version 1.0.0`
+`dotnet add package Bale.Net --version 1.0.1`
 
 or
 
-`<PackageReference Include="Bale.Net" Version="1.0.0" />`
+`<PackageReference Include="Bale.Net" Version="1.0.1" />`
 
 or
 
-`NuGet\Install-Package Bale.Net -Version 1.0.0`
+`NuGet\Install-Package Bale.Net -Version 1.0.1`
 
 # How To Use
 
