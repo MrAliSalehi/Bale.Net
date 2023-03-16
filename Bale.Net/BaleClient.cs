@@ -1,7 +1,5 @@
-﻿using System.Net.Http.Json;
-using System.Text;
+﻿using System.Text;
 using System.Text.Json;
-using System.Web;
 using Bale.Net.Implementations;
 using Bale.Net.Interfaces;
 using Bale.Net.Types;
