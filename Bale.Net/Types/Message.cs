@@ -6,7 +6,7 @@ public sealed class Message
 {
 
     [JsonPropertyName("message_id")]
-    public int MessageId { get; set; }
+    public long MessageId { get; set; }
 
     [JsonPropertyName("from")]
     public User? From { get; set; }

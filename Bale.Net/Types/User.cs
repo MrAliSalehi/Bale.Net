@@ -5,7 +5,7 @@ namespace Bale.Net.Types;
 public sealed class User
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [JsonPropertyName("username")]
     public string? Username { get; set; }

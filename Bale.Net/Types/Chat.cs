@@ -5,7 +5,7 @@ namespace Bale.Net.Types;
 public sealed class Chat
 {
     [JsonPropertyName("id")]
-    public int Id { get; set; }
+    public long Id { get; set; }
 
     [JsonPropertyName("type")]
     [JsonConverter(typeof(JsonStringEnumConverter))]
