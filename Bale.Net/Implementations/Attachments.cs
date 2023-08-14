@@ -64,7 +64,7 @@ public class Attachments : IAttachments
         var url = _client.ApiEndpoint.GetUrl(endpoint);
 
         
-        var body = media.GetContent(contentName);
+        using var body = media.GetContent(contentName);
         body.Add(new StringContent(chatId.ToString()),"chat_id");
         if (caption is not null)
             body.Add(new StringContent(caption!),nameof(caption));

@@ -2,7 +2,7 @@
 
 namespace Bale.Net.Types;
 
-public class Media
+public class Media : IDisposable
 {
     private readonly HttpContent _content;
     private bool _isFile;
@@ -15,7 +15,7 @@ public class Media
         _isFile = true
     };
     public static Media FromId(string fileId) => new(new StringContent(fileId));
-    public static Media FromUrl(Uri url) => new (new StringContent(url.AbsoluteUri));
+    public static Media FromUrl(Uri url) => new(new StringContent(url.AbsoluteUri));
 
     internal MultipartFormDataContent GetContent(string contentName)
     {
@@ -25,5 +25,10 @@ public class Media
         else
             form.Add(_content, contentName);
         return form;
+    }
+    void IDisposable.Dispose()
+    {
+        _content.Dispose();
+        GC.SuppressFinalize(this);
     }
 }

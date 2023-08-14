@@ -1,4 +1,5 @@
 ﻿using Bale.Net.Types;
+using File = System.IO.File;
 
 namespace Bale.Net.NUnit.InterfaceTests;
 
@@ -164,5 +165,23 @@ public class AttachmentsTest
             Assert.That(file.FileSize, Is.Not.Zero);
             Assert.That(file.FilePath, Is.Not.Null.Or.Empty);
         });
+    }
+    
+    [Test]
+    public async Task SendMedia_ShouldDisposeTheResources()
+    {
+        var fromDisk = TestCaseSources.PhotoMediaSource().First();
+        
+        await _client.Attachments.SendPhotoAsync(MyChatId,fromDisk,"hello");
+        
+        var validPhotoPath = Path.Combine(Environment.CurrentDirectory, "Screenshot_20230205_112447.png");
+        
+        var exists = File.Exists(validPhotoPath);
+        
+        Assert.That(exists, Is.True);
+        
+        await using var r = File.OpenRead(validPhotoPath);
+        var first = r.ReadByte();
+        Assert.That(first, Is.Not.LessThan(0));
     }
 }
