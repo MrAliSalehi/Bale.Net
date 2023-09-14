@@ -6,14 +6,23 @@ public class Media : IDisposable
 {
     private readonly HttpContent _content;
     private bool _isFile;
+    private string? _fileName = string.Empty;
+
     private Media(HttpContent content)
     {
         _content = content;
     }
-    public static Media FromDisk([StringSyntax(StringSyntaxAttribute.Uri)] string path) => new(new StreamContent(System.IO.File.OpenRead(path)))
+
+    public static Media FromDisk([StringSyntax(StringSyntaxAttribute.Uri)] string path)
     {
-        _isFile = true
-    };
+        var name = Path.GetFileName(path);
+        return new Media(new StreamContent(System.IO.File.OpenRead(path)))
+        {
+            _isFile = true,
+            _fileName = name
+        };
+    }
+
     public static Media FromId(string fileId) => new(new StringContent(fileId));
     public static Media FromUrl(Uri url) => new(new StringContent(url.AbsoluteUri));
 
@@ -21,11 +30,12 @@ public class Media : IDisposable
     {
         var form = new MultipartFormDataContent();
         if (_isFile)
-            form.Add(_content, contentName, "file");
+            form.Add(_content, contentName, _fileName ?? "file");
         else
             form.Add(_content, contentName);
         return form;
     }
+
     void IDisposable.Dispose()
     {
         _content.Dispose();
