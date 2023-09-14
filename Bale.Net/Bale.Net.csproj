@@ -10,9 +10,9 @@
         <Description>Bale bot Api Wrapper for dotnet core</Description>
         <Copyright>MIT</Copyright>
         <PackageProjectUrl>https://github.com/MrAliSalehi/Bale.Net</PackageProjectUrl>
-        <Version>1.0.3</Version>
+        <Version>1.0.4</Version>
         <Title>Bale.Net</Title>
-        <AssemblyVersion>1.0.3</AssemblyVersion>
+        <AssemblyVersion>1.0.4</AssemblyVersion>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/MrAliSalehi/Bale.Net</RepositoryUrl>
         <PackageTags>C#, Client Sdk, Bale</PackageTags>
