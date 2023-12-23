@@ -32,7 +32,7 @@ public class ChatsTest
         Assert.Multiple(() =>
         {
             Assert.That(chatMembers.Count(p => p.Status == "creator"), Is.EqualTo(1));
-            Assert.That(chatMembers.Count(p => p.User.Id == MyChatId), Is.EqualTo(1));
+            Assert.That(chatMembers.Count(p => p.User!.Id == MyChatId), Is.EqualTo(1));
         });
     }
     [Test]

@@ -26,7 +26,7 @@ public class UpdatesTest
     [Test]
     public async Task Update_Should_GetUpdates()
     {
-        var updates = await _client.Updates.GetUpdatesAsync(1, 0);
+        var updates = await _client.Updates.GetUpdatesAsync(-1, 0);
 
         var update = updates.First();
 

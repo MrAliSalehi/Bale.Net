@@ -4,7 +4,7 @@ namespace Bale.Net.NUnit;
 
 internal static class TestCaseSources
 {
-    private static readonly Uri ValidPhotoUrl = new("https://www.linkpicture.com/q/Screenshot_20230205_112447.png");
+    private static readonly Uri ValidPhotoUrl = new("https://avatars.githubusercontent.com/u/36738510?v=4");
     private static readonly Uri ValidAudioUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/beautiful-random-minor-arp-119378.mp3");
     private static readonly Uri ValidDocUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/Bale.Net.NUnit.pdb");
     private static readonly Uri ValidVidUrl = new("https://filebin.net/8aphk5vlrnnfg2rd/testVid.mp4");

@@ -9,7 +9,7 @@ public class MessagesTest
     private const long MyId = 2047754943;
     private const long TestBotId = 102472526;
     private const long ValidMessageId = 1750352069;
-    private const long ValidBotMessageIdToEdit = 1264118920;
+    private const long ValidBotMessageIdToEdit = -1863136851;
 
     private static readonly ReplyMarkup ValidInlineKeyboard = new()
     {
@@ -29,6 +29,7 @@ public class MessagesTest
     {
         var response = await _client.Messages.SendMessageAsync(MyId, Text);
         var now = DateTime.Now;
+        Console.WriteLine($"message id: {response.MessageId}");
         Assert.Multiple(() =>
         {
             Assert.That(response.Chat, Is.Not.Null);
