@@ -9,15 +9,11 @@ This is a Simple [Bale](https://bale.ai/) bot Api Wrapper for dotnet core.
 
 you can get this package using [nuget](https://www.nuget.org/packages/Bale.Net/):
 
-`dotnet add package Bale.Net --version 1.0.4`
+`dotnet add package Bale.Net`
 
 or
 
-`<PackageReference Include="Bale.Net" Version="1.0.4" />`
-
-or
-
-`NuGet\Install-Package Bale.Net -Version 1.0.4`
+`NuGet\Install-Package Bale.Net`
 
 # How To Use
 
@@ -65,8 +61,36 @@ var message = await _client.Attachments.SendPhotoAsync(chatId, media);
 
 other methods perform the same way, they all accept a `Media`, and you fill it the same way.
 
-you can also read my [tests](https://github.com/MrAliSalehi/Bale.Net/tree/master/Bale.Net.NUnit/InterfaceTests) to see the methods in action.
+you can also read my [tests](https://github.com/MrAliSalehi/Bale.Net/tree/master/Bale.Net.NUnit/InterfaceTests) to see
+the methods in action.
 
+### retry policy
+
+this packages uses [Polly](https://github.com/App-vNext/Polly) to retry **any** failed API calls, you customize it's
+behaviour like the following:
+
+- set the delay between each attempt:
+
+```csharp
+_client.Delay = TimeSpan.FromSeconds(1); //can be anything
+```
+
+- set the maximum retry attempts (the default is 3):
+
+```csharp
+_client.MaxRetryAttempts = 2;
+```
+
+- get notified when a retry is happening:
+```csharp
+_client.OnRetry = static arg =>
+{
+    Console.WriteLine(arg.AttemptNumber); //print the attempt counts
+    return ValueTask.CompletedTask;
+};
+```
+note that these settings should be done **before** any api calls, otherwise it wont have any effect.
+[*sample test*](https://github.com/MrAliSalehi/Bale.Net/blob/6f6c5452bf76ddc00dfda1c36fb9ebf5168cc0d7/Bale.Net.NUnit/InterfaceTests/MessagesTest.cs#L119).
 
 ## TODO
 
@@ -74,4 +98,4 @@ you can also read my [tests](https://github.com/MrAliSalehi/Bale.Net/tree/master
 - documentation for types
 - abstractions for update handling
 - more unit tests
-- SendContact throws internal error when `reply_to_message_id` is used
+- [SendContact throws internal error](https://github.com/MrAliSalehi/Bale.Net/blob/6f6c5452bf76ddc00dfda1c36fb9ebf5168cc0d7/Bale.Net.NUnit/InterfaceTests/AttachmentsTest.cs#L157) when `reply_to_message_id` is used
