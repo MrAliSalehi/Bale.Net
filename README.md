@@ -77,6 +77,7 @@ _client.Delay = TimeSpan.FromSeconds(1); //can be anything
 
 - set the maximum retry attempts (the default is 3):
 
+  - to completely disable the retry policy you can set this property to zero. 
 ```csharp
 _client.MaxRetryAttempts = 2;
 ```
