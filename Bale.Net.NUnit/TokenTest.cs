@@ -20,7 +20,14 @@ public class TokenTest
     [Test]
     public void ClientToken_IsNotNull()
     {
-        _client = new (_token);
-        Assert.That(_client.Token,Is.Not.Null);
+        _client = new(_token);
+        Assert.That(_client.Token, Is.Not.Null);
+    }
+
+    [Test]
+    public void GetMe_ShouldThrow_WhenTokenInvalid()
+    {
+        _client = new("some invalid token");
+        Assert.ThrowsAsync<Exception>(async () => await _client.Users.GetMeAsync());
     }
 }

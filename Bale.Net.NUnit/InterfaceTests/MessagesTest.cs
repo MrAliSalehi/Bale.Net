@@ -4,7 +4,7 @@ namespace Bale.Net.NUnit.InterfaceTests;
 
 public class MessagesTest
 {
-    private readonly BaleClient _client;
+    private readonly BaleClient _client = new(Helpers.GetTestToken());
     private const string Text = "hello";
     private const long MyId = 2047754943;
     private const long TestBotId = 102472526;
@@ -20,10 +20,6 @@ public class MessagesTest
         } }
     };
 
-    public MessagesTest()
-    {
-        _client = new(Helpers.GetTestToken());
-    }
     [Test]
     public async Task SendMessage_Should_SendMessage()
     {

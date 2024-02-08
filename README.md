@@ -66,3 +66,11 @@ var message = await _client.Attachments.SendPhotoAsync(chatId, media);
 other methods perform the same way, they all accept a `Media`, and you fill it the same way.
 
 you can also read my [tests](https://github.com/MrAliSalehi/Bale.Net/tree/master/Bale.Net.NUnit/InterfaceTests) to see the methods in action.
+
+
+## TODO
+
+- implement retry policy for the http client
+- documentation for types
+- abstractions for update handling
+- more unit tests

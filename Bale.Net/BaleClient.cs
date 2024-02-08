@@ -29,11 +29,8 @@ public class BaleClient
         ApiEndpoint = new(token);
 
         var provider = new ServiceCollection()
-            .AddHttpClient(nameof(BaleClient), client =>
-            {
-                client.BaseAddress = BaseUrl;
-            }).Services.BuildServiceProvider();
-        
+            .AddHttpClient(nameof(BaleClient), client => client.BaseAddress = BaseUrl).Services
+            .BuildServiceProvider();
 
         HttpClient = provider.GetRequiredService<IHttpClientFactory>().CreateClient(nameof(BaleClient));
 
