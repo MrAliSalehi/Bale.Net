@@ -24,7 +24,7 @@ public class Messages : IMessages
         if (replayToMessageId != 0)
             body.ReplyToMessageId = replayToMessageId;
 
-        return await _client.PostAsync<SendMessageRequest, Message>(Endpoint.SendMessage, body);
+        return await _client.TryPostAsync<SendMessageRequest, Message>(Endpoint.SendMessage, body);
     }
     public async ValueTask<EditMessage> EditMessageTextAsync(long chatId, long messageId, string message, ReplyMarkup? replyMarkup = null)
     {
@@ -37,7 +37,7 @@ public class Messages : IMessages
         if (replyMarkup is not null)
             body.ReplyMarkup = replyMarkup;
 
-        return await _client.PostAsync<EditMessageRequest, EditMessage>(Endpoint.EditMessage, body);
+        return await _client.TryPostAsync<EditMessageRequest, EditMessage>(Endpoint.EditMessage, body);
     }
     public async ValueTask<bool> DeleteMessageAsync(long chatId, long messageId)
     {
@@ -45,6 +45,6 @@ public class Messages : IMessages
         {
             ChatId = chatId, MessageId = messageId
         };
-        return await _client.PostAsync<DeleteMessageRequest, bool>(Endpoint.DeleteMessage, body);
+        return await _client.TryPostAsync<DeleteMessageRequest, bool>(Endpoint.DeleteMessage, body);
     }
 }

@@ -13,11 +13,14 @@ public class MessagesTest
 
     private static readonly ReplyMarkup ValidInlineKeyboard = new()
     {
-        InlineKeyboard = new[] { new[]
+        InlineKeyboard = new[]
         {
-            new InlineKeyboard { Text = "first inline", CallbackData = "first callback", SwitchInlineQuery = "", SwitchInlineQueryCurrentChat = "", Pay = false },
-            new InlineKeyboard { Text = "some link", Url = "https://www.google.com" }
-        } }
+            new[]
+            {
+                new InlineKeyboard { Text = "first inline", CallbackData = "first callback", SwitchInlineQuery = "", SwitchInlineQueryCurrentChat = "", Pay = false },
+                new InlineKeyboard { Text = "some link", Url = "https://www.google.com" }
+            }
+        }
     };
 
     [Test]
@@ -110,5 +113,29 @@ public class MessagesTest
         var response = await _client.Messages.DeleteMessageAsync(MyId, message.MessageId);
 
         Assert.That(response, Is.True);
+    }
+
+    [Test]
+    public async Task SendInvalidMessage_ShouldRetry()
+    {
+        const int invalidChatId = -1111111111;
+        _client.Delay = TimeSpan.FromSeconds(1);
+        _client.MaxRetryAttempts = 2;
+        _client.OnRetry = static arg =>
+        {
+            Console.WriteLine(arg.AttemptNumber);
+            return ValueTask.CompletedTask;
+        };
+        var attempts = _client.RetryAttempts;
+        try
+        {
+            await _client.Messages.SendMessageAsync(invalidChatId, "some msg");
+        }
+        catch
+        {
+            //ignore
+        }
+
+        Assert.That(_client.RetryAttempts, Is.Not.EqualTo(attempts));
     }
 }

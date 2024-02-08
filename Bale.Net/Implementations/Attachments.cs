@@ -25,7 +25,7 @@ public class Attachments : IAttachments
     public async ValueTask<Message> SendVoiceAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendVoice, "voice", chatId, media, caption, replayToMessageId);
     public async ValueTask<File> GetFileAsync(string fileId) =>
-        await _client.GetAsync<File>(Endpoint.GetFile, $"?file_id={fileId}");
+        await _client.TryGetAsync<File>(Endpoint.GetFile, $"?file_id={fileId}");
     public async ValueTask<Message> SendLocationAsync(long chatId, double latitude, double longitude, long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(Endpoint.SendLocation);
@@ -55,7 +55,7 @@ public class Attachments : IAttachments
         if (replayToMessageId is not 0)
             body.ReplyToMessageId = replayToMessageId;
 
-        return await _client.PostAsync<SendContactRequest, Message>(Endpoint.SendContact, body);
+        return await _client.TryPostAsync<SendContactRequest, Message>(Endpoint.SendContact, body);
     }
 
 

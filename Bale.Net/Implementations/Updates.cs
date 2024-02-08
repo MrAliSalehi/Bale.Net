@@ -13,10 +13,10 @@ public class Updates : IUpdates
         _client = client;
     }
 
-    public async ValueTask<bool> SetWebHookAsync([StringSyntax(StringSyntaxAttribute.Uri)] string url) => await _client.PostAsync<SetWebhookRequest, bool>(Endpoint.SetWebHook, new SetWebhookRequest { Url = url });
-    public async ValueTask<bool> DeleteWebHookAsync() => await _client.GetAsync<bool>(Endpoint.DeleteWebHook);
+    public async ValueTask<bool> SetWebHookAsync([StringSyntax(StringSyntaxAttribute.Uri)] string url) => await _client.TryPostAsync<SetWebhookRequest, bool>(Endpoint.SetWebHook, new SetWebhookRequest { Url = url });
+    public async ValueTask<bool> DeleteWebHookAsync() => await _client.TryGetAsync<bool>(Endpoint.DeleteWebHook);
     public async ValueTask<Update[]> GetUpdatesAsync(long offset, long limit) => 
-        await _client.PostAsync<GetUpdatesRequest, Update[]>(Endpoint.GetUpdates, new GetUpdatesRequest
+        await _client.TryPostAsync<GetUpdatesRequest, Update[]>(Endpoint.GetUpdates, new GetUpdatesRequest
     {
         Limit = limit, Offset = offset
     });

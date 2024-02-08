@@ -11,5 +11,5 @@ public class Payments : IPayments
         _client = client;
     }
     public async ValueTask<Message> SendInvoiceAsync(InvoiceRequest request) => 
-        await _client.PostAsync<InvoiceRequest, Message>(Endpoint.SendInvoice, request);
+        await _client.TryPostAsync<InvoiceRequest, Message>(Endpoint.SendInvoice, request);
 }

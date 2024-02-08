@@ -12,7 +12,7 @@ public class Users : IUsers
     }
     public async ValueTask<User> GetMeAsync()
     {
-        var response = await _client.GetAsync<User>(Endpoint.GetMe);
+        var response = await _client.TryGetAsync<User>(Endpoint.GetMe);
 
         if (response.Id == 0)
             throw new Exception("invalid token, request failed.");
