@@ -23,4 +23,11 @@ public class UsersTest
             Assert.That(me.Id, Is.Not.Zero);
         });
     }
+
+    [Test]
+    public void GetMe_ShouldThrow()
+    {
+        var cl = new BaleClient("invalid token");
+        Assert.ThrowsAsync<Exception>(async ()=>await cl.Users.GetMeAsync());
+    }
 }

@@ -31,6 +31,8 @@ internal static class TestCaseSources
         yield return Media.FromUrl(ValidDocUrl);
         Task.Delay(600);
         yield return Media.FromId(validDocFileId);
+        /*Task.Delay(1000);
+        yield return Media.FromDisk(Path.Combine(Environment.CurrentDirectory,"test.rar")); //25MB*/
     }
     internal static IEnumerable<Media> VideoMediaSource()
     {

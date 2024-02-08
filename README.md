@@ -74,3 +74,4 @@ you can also read my [tests](https://github.com/MrAliSalehi/Bale.Net/tree/master
 - documentation for types
 - abstractions for update handling
 - more unit tests
+- SendContact throws internal error when `reply_to_message_id` is used
