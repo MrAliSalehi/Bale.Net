@@ -67,10 +67,10 @@ public class UpdatesTest
     {
         var client = new BaleClient("")
         {
-            Updates = new TestUpdates()
+            Updates = new TestUpdates(),
         };
-        client.Updates.ReceiveUpdates<GenericUpdateHandler, Message>();
-        await Task.Delay(TimeSpan.FromSeconds(3));
+        client.Updates.ReceiveUpdates<GenericUpdateHandler, Message>(TimeSpan.FromSeconds(1));
+        await Task.Delay(TimeSpan.FromSeconds(7));
         Assert.That(UpdateCount, Is.EqualTo(TestUpdates.IncomingUpdateCount));
         client.Updates.StopReceiving();
         UpdateCount = 0;
@@ -99,8 +99,8 @@ public class UpdatesTest
         {
             Updates = new TestUpdates()
         };
-        client.Updates.ReceiveUpdates<GenericUpdateHandler, Message>();
-        await Task.Delay(TimeSpan.FromSeconds(3));
+        client.Updates.ReceiveUpdates<GenericUpdateHandler, Message>(TimeSpan.FromSeconds(1));
+        await Task.Delay(TimeSpan.FromSeconds(5));
         Assert.Multiple(() =>
         {
             Assert.That(UpdateCount, Is.EqualTo(TestUpdates.IncomingUpdateCount));
@@ -159,6 +159,9 @@ file class GenericUpdateHandler : IUpdateHandler<Message>
     public ValueTask ReceiveUpdateAsync(Message update, CancellationToken ct = default)
     {
         UpdatesTest.UpdateCount += 1;
+        if (UpdatesTest.UpdateCount <= 5)
+            throw new Exception("test exception");
+
         return ValueTask.CompletedTask;
     }
     public ValueTask HandleErrorsAsync(Exception exception, CancellationToken ct = default)
@@ -172,8 +175,16 @@ file class TestUpdates : IUpdates
 {
     public const int IncomingUpdateCount = 10;
     private readonly Faker<Update> _faker = new();
+    private readonly Faker<Message> _msgFaker = new();
     private int _count;
-    public ValueTask<Update[]> GetUpdatesAsync(long offset, long limit) => new(_count++ < 2 ? _faker.Generate(IncomingUpdateCount).ToArray() : Array.Empty<Update>());
+    public ValueTask<Update[]> GetUpdatesAsync(long offset, long limit) => new(_count++ < 2
+                                                                                   ? _faker
+                                                                                       .CustomInstantiator(_ => new Update
+                                                                                       {
+                                                                                           Message = _msgFaker.Generate(1).First(),
+                                                                                       })
+                                                                                       .Generate(IncomingUpdateCount).ToArray()
+                                                                                   : Array.Empty<Update>());
     public ValueTask<bool> SetWebHookAsync(string url) => throw new NotImplementedException();
     public ValueTask<bool> DeleteWebHookAsync() => throw new NotImplementedException();
 }
