@@ -185,8 +185,8 @@ file class TestUpdates : IUpdates
                                                                                        })
                                                                                        .Generate(IncomingUpdateCount).ToArray()
                                                                                    : Array.Empty<Update>());
-    public ValueTask<bool> SetWebHookAsync(string url) => throw new NotImplementedException();
-    public ValueTask<bool> DeleteWebHookAsync() => throw new NotImplementedException();
+    public ValueTask<bool> SetWebHookAsync(string url) => throw new Exception();
+    public ValueTask<bool> DeleteWebHookAsync() => throw new Exception();
 }
 
 file class TestUpdatesFails : IUpdates
@@ -195,6 +195,6 @@ file class TestUpdatesFails : IUpdates
     private readonly Faker<Update> _faker = new();
     public static int Count;
     public ValueTask<Update[]> GetUpdatesAsync(long offset, long limit) => throw new Exception($"test exception {Count++}");
-    public ValueTask<bool> SetWebHookAsync(string url) => throw new NotImplementedException();
-    public ValueTask<bool> DeleteWebHookAsync() => throw new NotImplementedException();
+    public ValueTask<bool> SetWebHookAsync(string url) => throw new Exception();
+    public ValueTask<bool> DeleteWebHookAsync() => throw new Exception();
 }
