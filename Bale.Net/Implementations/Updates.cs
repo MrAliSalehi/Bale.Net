@@ -15,9 +15,9 @@ public class Updates : IUpdates
 
     public async ValueTask<bool> SetWebHookAsync([StringSyntax(StringSyntaxAttribute.Uri)] string url) => await _client.TryPostAsync<SetWebhookRequest, bool>(Endpoint.SetWebHook, new SetWebhookRequest { Url = url });
     public async ValueTask<bool> DeleteWebHookAsync() => await _client.TryGetAsync<bool>(Endpoint.DeleteWebHook);
-    public async ValueTask<Update[]> GetUpdatesAsync(long offset, long limit) => 
+    public async ValueTask<Update[]> GetUpdatesAsync(long offset = 0, long limit = 0) =>
         await _client.TryPostAsync<GetUpdatesRequest, Update[]>(Endpoint.GetUpdates, new GetUpdatesRequest
-    {
-        Limit = limit, Offset = offset
-    });
+        {
+            Limit = limit, Offset = offset
+        });
 }

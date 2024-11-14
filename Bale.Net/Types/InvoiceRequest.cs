@@ -5,7 +5,7 @@ namespace Bale.Net.Types;
 public sealed class InvoiceRequest
 {
     [JsonPropertyName("chat_id")]
-    public int ChatId { get; set; }
+    public required ChatId ChatId { get; set; }
 
     [JsonPropertyName("title")]
     public string? Title { get; set; }

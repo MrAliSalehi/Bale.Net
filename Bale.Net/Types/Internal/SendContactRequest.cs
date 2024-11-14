@@ -5,7 +5,7 @@ namespace Bale.Net.Types.Internal;
 public class SendContactRequest
 {
     [JsonPropertyName("chat_id")]
-    public long ChatId { get; set; }
+    public required ChatId ChatId { get; set; }
     [JsonPropertyName("phone_number")]
     public string? PhoneNumber { get; set; }
     [JsonPropertyName("first_name")]

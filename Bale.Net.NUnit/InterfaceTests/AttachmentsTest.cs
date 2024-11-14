@@ -8,6 +8,7 @@ public class AttachmentsTest
     private readonly BaleClient _client;
     private const long MyChatId = 2047754943;
     private const long TestBotId = 102472526;
+    private const string GroupUsername = "@testgpid";
     private static IEnumerable<Media> _photoMediaSource = TestCaseSources.PhotoMediaSource();
     private static IEnumerable<Media> _audioMediaSource = TestCaseSources.AudioMediaSource();
     private static IEnumerable<Media> _documentMediaSource = TestCaseSources.DocumentMediaSource();
@@ -50,7 +51,7 @@ public class AttachmentsTest
     [Test, TestCaseSource(nameof(_audioMediaSource))]
     public async Task SendAudio_ShouldSendAudio(Media media)
     {
-        var message = await _client.Attachments.SendAudioAsync(MyChatId, media, "test Audio");
+        var message = await _client.Attachments.SendAudioAsync(GroupUsername, media, "test Audio");
 
         Assert.That(message.Audio, Is.Not.Null.Or.Empty);
         Assert.Multiple(() =>
@@ -59,7 +60,8 @@ public class AttachmentsTest
             Assert.That(message.Audio.FileSize, Is.Not.Zero.Or.Empty);
             Assert.That(message.Caption, Is.Not.Null.Or.Empty);
             Assert.That(message.Audio.MimeType, Is.Not.Null.Or.Empty);
-            Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
+            if (message.Chat!.Type == ChatType.Private)
+                Assert.That(message.Chat!.Id, Is.EqualTo(MyChatId));
             Assert.That(message.From, Is.Not.Null);
         });
     }

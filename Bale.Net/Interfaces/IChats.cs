@@ -9,24 +9,26 @@ public interface IChats
     /// </summary>
     /// <param name="chatId">id of the chat</param>
     /// <returns>the targeted chat</returns>
-    ValueTask<Chat> GetChatAsync(long chatId);
+    ValueTask<Chat> GetChatAsync(ChatId chatId);
     /// <summary>
     /// get all the admins of a chat
     /// </summary>
     /// <param name="chatId">id of the chat</param>
     /// <returns>administrators</returns>
-    ValueTask<ChatMember[]> GetChatAdministratorsAsync(long chatId);
+    [Obsolete("it seems that this endpoint has been removed from the api")]
+    ValueTask<ChatMember[]> GetChatAdministratorsAsync(ChatId chatId);
     /// <summary>
     /// count of the members of a chat
     /// </summary>
     /// <param name="chatId">id of the chat</param>
     /// <returns>members count</returns>
-    ValueTask<long> GetChatMembersCountAsync(long chatId);
+    ValueTask<long> GetChatMembersCountAsync(ChatId chatId);
     /// <summary>
     /// get a user from a specific chat
     /// </summary>
     /// <param name="chatId">id of the chat</param>
     /// <param name="userId">id of the user</param>
     /// <returns>the user</returns>
-    ValueTask<ChatMember> GetChatMemberAsync(long chatId,long userId);
+    [Obsolete("it seems that this endpoint has been removed from the api")]
+    ValueTask<ChatMember> GetChatMemberAsync(ChatId chatId, long userId);
 }

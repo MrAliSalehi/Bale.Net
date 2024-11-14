@@ -12,7 +12,7 @@ public interface IAttachments
     /// <param name="caption"> optional-caption</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the photo)</returns>
-    ValueTask<Message> SendPhotoAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0);
+    ValueTask<Message> SendPhotoAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0);
     /// <summary>
     /// send a audio content to a specific chat
     /// </summary>
@@ -21,7 +21,7 @@ public interface IAttachments
     /// <param name="caption">optional-caption</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the audio)</returns>
-    ValueTask<Message> SendAudioAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0);
+    ValueTask<Message> SendAudioAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0);
     /// <summary>
     /// send a document to a specific chat
     /// </summary>
@@ -30,7 +30,7 @@ public interface IAttachments
     /// <param name="caption">optional-caption</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the document)</returns>
-    ValueTask<Message> SendDocumentAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0);
+    ValueTask<Message> SendDocumentAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0);
     /// <summary>
     /// send a video to a specific chat
     /// </summary>
@@ -39,7 +39,7 @@ public interface IAttachments
     /// <param name="caption">optional-caption</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the video)</returns>
-    ValueTask<Message> SendVideoAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0);
+    ValueTask<Message> SendVideoAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0);
     /// <summary>
     /// send a voice content to a specific chat
     /// </summary>
@@ -48,7 +48,7 @@ public interface IAttachments
     /// <param name="caption">optional-caption</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the voice)</returns>
-    ValueTask<Message> SendVoiceAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0);
+    ValueTask<Message> SendVoiceAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0);
     /// <summary>
     /// send a location to a specific chat
     /// </summary>
@@ -57,7 +57,7 @@ public interface IAttachments
     /// <param name="longitude">the target longitude</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the location)</returns>
-    ValueTask<Message> SendLocationAsync(long chatId, double latitude, double longitude, long replayToMessageId = 0);
+    ValueTask<Message> SendLocationAsync(ChatId chatId, double latitude, double longitude, long replayToMessageId = 0);
     /// <summary>
     /// share a contact in a specific chat
     /// </summary>
@@ -67,7 +67,7 @@ public interface IAttachments
     /// <param name="lastName"> last name of the contact</param>
     /// <param name="replayToMessageId">optional-message id to replay</param>
     /// <returns>the sent message (including the contact)</returns>
-    ValueTask<Message> SendContactAsync(long chatId, string phoneNumber, string firstName, string? lastName = "", long replayToMessageId = 0);
+    ValueTask<Message> SendContactAsync(ChatId chatId, string phoneNumber, string firstName, string? lastName = "", long replayToMessageId = 0);
     /// <summary>
     /// get a file that was already uploaded to the server by id
     /// </summary>

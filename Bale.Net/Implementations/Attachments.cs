@@ -14,19 +14,19 @@ public class Attachments : IAttachments
     {
         _client = client;
     }
-    public async ValueTask<Message> SendPhotoAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+    public async ValueTask<Message> SendPhotoAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendPhoto, "photo", chatId, media, caption, replayToMessageId);
-    public async ValueTask<Message> SendAudioAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+    public async ValueTask<Message> SendAudioAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendAudio, "audio", chatId, media, caption, replayToMessageId);
-    public async ValueTask<Message> SendDocumentAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+    public async ValueTask<Message> SendDocumentAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendDocument, "document", chatId, media, caption, replayToMessageId);
-    public async ValueTask<Message> SendVideoAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+    public async ValueTask<Message> SendVideoAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendVideo, "video", chatId, media, caption, replayToMessageId);
-    public async ValueTask<Message> SendVoiceAsync(long chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
+    public async ValueTask<Message> SendVoiceAsync(ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0) =>
         await SendAttachmentAsync(Endpoint.SendVoice, "voice", chatId, media, caption, replayToMessageId);
     public async ValueTask<File> GetFileAsync(string fileId) =>
         await _client.TryGetAsync<File>(Endpoint.GetFile, $"?file_id={fileId}");
-    public async ValueTask<Message> SendLocationAsync(long chatId, double latitude, double longitude, long replayToMessageId = 0)
+    public async ValueTask<Message> SendLocationAsync(ChatId chatId, double latitude, double longitude, long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(Endpoint.SendLocation);
         url += $"?chat_id={chatId}&{nameof(latitude)}={latitude}&{nameof(longitude)}={longitude}";
@@ -44,7 +44,7 @@ public class Attachments : IAttachments
 
         return deserialize.Result;
     }
-    public async ValueTask<Message> SendContactAsync(long chatId, string phoneNumber, string firstName, string? lastName = "", long replayToMessageId = 0)
+    public async ValueTask<Message> SendContactAsync(ChatId chatId, string phoneNumber, string firstName, string? lastName = "", long replayToMessageId = 0)
     {
         var body = new SendContactRequest
         {
@@ -59,17 +59,18 @@ public class Attachments : IAttachments
     }
 
 
-    private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, long chatId, Media media, string? caption = null, long replayToMessageId = 0)
+    private async ValueTask<Message> SendAttachmentAsync(Endpoint endpoint, string contentName, ChatId chatId, Media media, string? caption = null, long replayToMessageId = 0)
     {
         var url = _client.ApiEndpoint.GetUrl(endpoint);
 
-        
+
         using var body = media.GetContent(contentName);
-        body.Add(new StringContent(chatId.ToString()),"chat_id");
+
+        body.Add(new StringContent(chatId.ToString()), "chat_id");
         if (caption is not null)
-            body.Add(new StringContent(caption!),nameof(caption));
-        
-        var response = await _client.HttpClient.PostAsync(url,body );
+            body.Add(new StringContent(caption!), nameof(caption));
+
+        var response = await _client.HttpClient.PostAsync(url, body);
         var content = JsonSerializer.Deserialize<BaseApiResponse<Message>>(await response.Content.ReadAsStringAsync());
 
         if (content is null)

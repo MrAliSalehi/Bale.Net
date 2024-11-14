@@ -5,7 +5,7 @@ namespace Bale.Net.Types.Internal;
 internal sealed class SendMessageRequest
 {
     [JsonPropertyName("chat_id")]
-    public long ChatId { get; set; }
+    public required ChatId ChatId { get; set; }
 
     [JsonPropertyName("text")]
     public string? Text { get; set; }

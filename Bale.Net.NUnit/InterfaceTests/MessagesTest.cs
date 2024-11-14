@@ -7,26 +7,26 @@ public class MessagesTest
     private readonly BaleClient _client = new(Helpers.GetTestToken());
     private const string Text = "hello";
     private const long MyId = 2047754943;
+    private const string GroupUsername = "@testgpid";
     private const long TestBotId = 102472526;
     private const long ValidMessageId = 1750352069;
     private const long ValidBotMessageIdToEdit = -1863136851;
 
     private static readonly ReplyMarkup ValidInlineKeyboard = new()
     {
-        InlineKeyboard = new[]
-        {
-            new[]
-            {
+        InlineKeyboard =
+        [
+            [
                 new InlineKeyboard { Text = "first inline", CallbackData = "first callback", SwitchInlineQuery = "", SwitchInlineQueryCurrentChat = "", Pay = false },
                 new InlineKeyboard { Text = "some link", Url = "https://www.google.com" }
-            }
-        }
+            ]
+        ]
     };
 
     [Test]
     public async Task SendMessage_Should_SendMessage()
     {
-        var response = await _client.Messages.SendMessageAsync(MyId, Text);
+        var response = await _client.Messages.SendMessageAsync(GroupUsername, Text);
         var now = DateTime.Now;
         Console.WriteLine($"message id: {response.MessageId}");
         Assert.Multiple(() =>
@@ -38,7 +38,6 @@ public class MessagesTest
         {
             Assert.That(response.MessageId, Is.Not.Zero);
             Assert.That(response.Text, Is.EqualTo(Text));
-            Assert.That(response.Chat!.Id, Is.EqualTo(MyId));
             Assert.That(response.From!.Id, Is.EqualTo(TestBotId));
 
             Assert.That(response.Date.Year, Is.EqualTo(now.Year));
