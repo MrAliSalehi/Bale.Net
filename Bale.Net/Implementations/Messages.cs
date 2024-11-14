@@ -39,13 +39,14 @@ public class Messages : IMessages
 
         return await _client.TryPostAsync<EditMessageRequest, EditMessage>(Endpoint.EditMessage, body);
     }
-    public async ValueTask<Message> ForwardMessageAsync(ChatId chatId, ChatId fromChatId, long msgId)
+    public ValueTask<Message> ForwardMessageAsync(ChatId chatId, ChatId fromChatId, long msgId)
     {
-        var body = new ForwardMessageRequest
-        {
-            ChatId = chatId, MessageId = msgId, FromChatId = fromChatId
-        };
-        return await _client.TryPostAsync<ForwardMessageRequest, Message>(Endpoint.ForwardMessage, body);
+        return FwdOrCpyMessageAsync(chatId,fromChatId,msgId, Endpoint.ForwardMessage);
+    }
+
+    public ValueTask<Message> CopyMessageAsync(ChatId chatId, ChatId fromChatId, long msgId)
+    {
+        return FwdOrCpyMessageAsync(chatId,fromChatId,msgId, Endpoint.CopyMessage);
     }
 
     public async ValueTask<bool> DeleteMessageAsync(ChatId chatId, long messageId)
@@ -55,5 +56,13 @@ public class Messages : IMessages
             ChatId = chatId, MessageId = messageId
         };
         return await _client.TryPostAsync<DeleteMessageRequest, bool>(Endpoint.DeleteMessage, body);
+    }
+    private async ValueTask<Message> FwdOrCpyMessageAsync(ChatId chatId, ChatId fromChatId, long msgId, Endpoint e)
+    {
+        var body = new ForwardOrCopyMessageRequest
+        {
+            ChatId = chatId, MessageId = msgId, FromChatId = fromChatId
+        };
+        return await _client.TryPostAsync<ForwardOrCopyMessageRequest, Message>(e, body);
     }
 }

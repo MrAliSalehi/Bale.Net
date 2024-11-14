@@ -33,6 +33,15 @@ public interface IMessages
     ValueTask<Message> ForwardMessageAsync(ChatId chatId, ChatId fromChatId, long msgId);
 
     /// <summary>
+    /// same as ForwardMessage but it doesnt reveal the original author of the message
+    /// </summary>
+    /// <param name="chatId">the destination chat</param>
+    /// <param name="fromChatId">the source chat</param>
+    /// <param name="msgId">id of the message to be copied</param>
+    /// <returns>the copied message</returns>
+    ValueTask<Message> CopyMessageAsync(ChatId chatId, ChatId fromChatId, long msgId);
+
+    /// <summary>
     /// delete a message from a chat
     /// </summary>
     /// <param name="chatId">id of the chat</param>
