@@ -95,8 +95,8 @@ note that these settings should be done **before** any api calls, otherwise it w
 
 ## TODO
 
-- implement retry policy for the http client
 - documentation for types
-- abstractions for update handling
+- abstractions for update handling (in progress)
+- mock the API
 - more unit tests
 - [SendContact throws internal error](https://github.com/MrAliSalehi/Bale.Net/blob/6f6c5452bf76ddc00dfda1c36fb9ebf5168cc0d7/Bale.Net.NUnit/InterfaceTests/AttachmentsTest.cs#L157) when `reply_to_message_id` is used

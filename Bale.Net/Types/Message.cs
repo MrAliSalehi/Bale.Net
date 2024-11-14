@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using Bale.Net.Updates;
 
 namespace Bale.Net.Types;
 
-public sealed class Message
+public sealed class Message : IUpdateType
 {
 
     [JsonPropertyName("message_id")]

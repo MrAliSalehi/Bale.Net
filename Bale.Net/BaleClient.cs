@@ -16,7 +16,7 @@ public class BaleClient
     public IChats Chats { get; }
     public IMessages Messages { get; }
     public IPayments Payments { get; }
-    public IUpdates Updates { get; }
+    public IUpdates Updates { get; internal set;}
     public IUsers Users { get; }
 
     /// <summary>
@@ -74,7 +74,7 @@ public class BaleClient
 
         Users = new Users(this);
         Messages = new Messages(this);
-        Updates = new Updates(this);
+        Updates = new Implementations.Updates(this);
         Chats = new Chats(this);
         Attachments = new Attachments(this);
         Payments = new Payments(this);

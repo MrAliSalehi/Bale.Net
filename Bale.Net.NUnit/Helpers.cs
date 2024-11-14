@@ -8,8 +8,5 @@ public static class Helpers
         .AddJsonFile("secrets.json")
         .Build();
 
-    internal static string GetTestToken()
-    {
-        return Configuration.GetRequiredSection("Token").Value!;
-    }
+    internal static string GetTestToken() => Configuration.GetRequiredSection("Token").Value!;
 }

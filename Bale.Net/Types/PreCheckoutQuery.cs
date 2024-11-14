@@ -1,8 +1,9 @@
 ﻿using System.Text.Json.Serialization;
+using Bale.Net.Updates;
 
 namespace Bale.Net.Types;
 
-public sealed class PreCheckoutQuery
+public sealed class PreCheckoutQuery : IUpdateType
 {
     [JsonPropertyName("id")]
     public string? Id { get; set; }

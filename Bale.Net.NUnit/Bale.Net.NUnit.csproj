@@ -10,6 +10,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Bogus" Version="35.4.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="7.0.0" />
         <PackageReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.2" />
         <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.3.2" />
