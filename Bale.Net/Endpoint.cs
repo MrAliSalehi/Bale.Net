@@ -29,6 +29,7 @@ internal sealed class ApiEndpoint
         Endpoint.GetFile               => "/GetFile",
         Endpoint.SendInvoice           => "/SendInvoice",
         Endpoint.SendContact           => "/SendContact",
+        Endpoint.ForwardMessage        => "/ForwardMessage",
         _                              => throw new ArgumentException("invalid argument")
     };
 }
@@ -55,5 +56,6 @@ internal enum Endpoint
     SendContact,
     GetFile,
     SendInvoice,
-    None
+    None,
+    ForwardMessage
 }

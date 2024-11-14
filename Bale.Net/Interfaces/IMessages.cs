@@ -22,6 +22,16 @@ public interface IMessages
     /// <param name="replyMarkup">new replay markup keyboard (pass null to remove the keyboard)</param>
     /// <returns>the new edited message</returns>
     ValueTask<EditMessage> EditMessageTextAsync(ChatId chatId, long messageId, string message, ReplyMarkup? replyMarkup = null);
+
+    /// <summary>
+    /// forward a message to the target chat
+    /// </summary>
+    /// <param name="chatId">the destination chat</param>
+    /// <param name="fromChatId">the source chat</param>
+    /// <param name="msgId">id of the message to be forwarded</param>
+    /// <returns>the forwarded message</returns>
+    ValueTask<Message> ForwardMessageAsync(ChatId chatId, ChatId fromChatId, long msgId);
+
     /// <summary>
     /// delete a message from a chat
     /// </summary>

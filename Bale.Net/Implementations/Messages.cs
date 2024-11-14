@@ -20,7 +20,7 @@ public class Messages : IMessages
         };
         if (replyMarkup is not null)
             body.ReplyMarkup = replyMarkup;
-        
+
         if (replayToMessageId != 0)
             body.ReplyToMessageId = replayToMessageId;
 
@@ -39,6 +39,15 @@ public class Messages : IMessages
 
         return await _client.TryPostAsync<EditMessageRequest, EditMessage>(Endpoint.EditMessage, body);
     }
+    public async ValueTask<Message> ForwardMessageAsync(ChatId chatId, ChatId fromChatId, long msgId)
+    {
+        var body = new ForwardMessageRequest
+        {
+            ChatId = chatId, MessageId = msgId, FromChatId = fromChatId
+        };
+        return await _client.TryPostAsync<ForwardMessageRequest, Message>(Endpoint.ForwardMessage, body);
+    }
+
     public async ValueTask<bool> DeleteMessageAsync(ChatId chatId, long messageId)
     {
         var body = new DeleteMessageRequest
