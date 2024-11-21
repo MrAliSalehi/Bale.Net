@@ -14,6 +14,6 @@ public sealed class EditMessageRequest
     [JsonPropertyName("text")]
     public string? Message { get; set; }
     
-    [JsonPropertyName("replay_markup")]
+    [JsonPropertyName("reply_markup")]
     public ReplyMarkup? ReplyMarkup { get; set; }
 }
