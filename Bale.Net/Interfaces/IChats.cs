@@ -23,6 +23,7 @@ public interface IChats
     /// <param name="chatId">id of the chat</param>
     /// <returns>members count</returns>
     ValueTask<long> GetChatMembersCountAsync(ChatId chatId);
+    ValueTask<bool> LeaveChatAsync(ChatId chatId);
     /// <summary>
     /// get a user from a specific chat
     /// </summary>
