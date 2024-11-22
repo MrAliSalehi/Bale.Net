@@ -1,5 +1,6 @@
 ﻿using Bale.Net.Interfaces;
 using Bale.Net.Types;
+using Bale.Net.Types.Internal;
 
 namespace Bale.Net.Implementations;
 
