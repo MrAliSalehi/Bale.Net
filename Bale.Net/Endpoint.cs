@@ -31,6 +31,9 @@ internal sealed class ApiEndpoint
         Endpoint.SendContact           => "/SendContact",
         Endpoint.ForwardMessage        => "/ForwardMessage",
         Endpoint.CopyMessage           => "/CopyMessage",
+        Endpoint.LeaveChat             => "/LeaveChat",
+        Endpoint.PinChatMessage        => "/PinChatMessage",
+        Endpoint.UnPinChatMessage      => "/unPinChatMessage",
         _                              => throw new ArgumentException("invalid argument")
     };
 }
@@ -59,5 +62,8 @@ internal enum Endpoint
     SendInvoice,
     None,
     ForwardMessage,
-    CopyMessage
+    CopyMessage,
+    LeaveChat,
+    PinChatMessage,
+    UnPinChatMessage,
 }

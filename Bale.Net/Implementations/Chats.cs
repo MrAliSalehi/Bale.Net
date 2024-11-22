@@ -1,5 +1,6 @@
 ﻿using Bale.Net.Interfaces;
 using Bale.Net.Types;
+using Bale.Net.Types.Internal;
 
 namespace Bale.Net.Implementations;
 
@@ -18,4 +19,6 @@ public class Chats : IChats
         await _client.TryGetAsync<long>(Endpoint.GetChatMembersCount, $"?chat_id={chatId}");
     public async ValueTask<ChatMember> GetChatMemberAsync(ChatId chatId, long userId) =>
         await _client.TryGetAsync<ChatMember>(Endpoint.GetChatMember, $"?chat_id={chatId}&user_id={userId}");
+    public async ValueTask<bool> LeaveChatAsync(ChatId chatId) => 
+        await _client.TryPostAsync<LeaveChatRequest, bool>(Endpoint.LeaveChat, new LeaveChatRequest { ChatId = chatId });
 }

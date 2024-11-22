@@ -65,4 +65,31 @@ public class Messages : IMessages
         };
         return await _client.TryPostAsync<ForwardOrCopyMessageRequest, Message>(e, body);
     }
+    //public async ValueTask<EditMessage> PinChatMessageAsync(ChatId chatId, long messageId)
+    //{
+    //    var body = new PinChatMessageRequest
+    //    {
+    //        ChatId = chatId,
+    //        MessageId = messageId,
+    //    };
+    //    return await _client.TryPostAsync<PinChatMessageRequest, EditMessage>(Endpoint.PinChatMessage, body);
+    //}
+    public ValueTask<bool> PinChatMessageAsync(ChatId chatId, long messageId)
+    {
+        return PinOrUnpinChatMessageAsync(chatId, messageId, Endpoint.PinChatMessage);
+    }
+    public ValueTask<bool> UnPinChatMessageAsync(ChatId chatId, long messageId)
+    {
+        return PinOrUnpinChatMessageAsync(chatId, messageId, Endpoint.UnPinChatMessage);
+    }
+
+    private async ValueTask<bool> PinOrUnpinChatMessageAsync(ChatId chatId, long messageId, Endpoint e)
+    {
+        var body = new PinOrUnpinChatMessageRequest
+        {
+            ChatId = chatId,
+            MessageId = messageId,
+        };
+        return await _client.TryPostAsync<PinOrUnpinChatMessageRequest, bool>(e, body);
+    }
 }

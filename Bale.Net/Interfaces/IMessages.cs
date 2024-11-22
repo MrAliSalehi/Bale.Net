@@ -22,7 +22,8 @@ public interface IMessages
     /// <param name="replyMarkup">new replay markup keyboard (pass null to remove the keyboard)</param>
     /// <returns>the new edited message</returns>
     ValueTask<EditMessage> EditMessageTextAsync(ChatId chatId, long messageId, string message, ReplyMarkup? replyMarkup = null);
-
+    ValueTask<bool> PinChatMessageAsync(ChatId chatId, long messageId);
+    ValueTask<bool> UnPinChatMessageAsync(ChatId chatId, long messageId);
     /// <summary>
     /// forward a message to the target chat
     /// </summary>
